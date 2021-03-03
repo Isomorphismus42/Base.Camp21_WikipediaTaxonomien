@@ -15,11 +15,20 @@ public class Analyzer {
         initPatterns();
     }
 
-    public ArrayList<String> checkSentence(String sentence) {
-        handleLine(sentence);
-        ArrayList<String> result = hits;
-        hits.clear();
-        return result;
+    public String checkSentence(String sentence) {
+        Pattern suchAsPattern = Pattern.compile("\\w*(_B-NP)( \\w*_I-NP)* such_JJ_B-PP as_IN_I-PP \\w*(_B-NP)( \\w*_I-NP)");
+        Matcher suchAsMatcher = suchAsPattern.matcher(sentence);
+        if (suchAsMatcher.find()) {
+            return suchAsMatcher.group(0);
+        }
+        else {
+            return "";
+        }
+
+//        handleLine(sentence);
+//        ArrayList<String> result = hits;
+//        hits.clear();
+//        return result;
     }
 
     /**
@@ -27,7 +36,9 @@ public class Analyzer {
      * @param sentence Satz, der verarbeitet werden soll
      */
     private void handleLine(String sentence) {
-            patterns.forEach((p) -> checkForPattern(p,sentence));
+        for (Pattern p : patterns) {
+            checkForPattern(p, sentence);
+        }
     }
 
     /**
@@ -37,18 +48,21 @@ public class Analyzer {
      */
     private void checkForPattern(Pattern p, String s) {
         m = p.matcher(s);
-        if (m.find()) hits.add(m.group(0));
+        if (m.find()) {
+            hits.add(m.group(0));
+        }
     }
 
     /**
      * Erstellt die Regex Patterns, nach denen im Text geguckt werden soll
      */
     private void initPatterns() {
-        List<String> patternsString = new ArrayList<String>();
-        patternsString.add("\\w+\\s(such as)\\s([A-Z]\\w*\\s?)+"); // Personen, Firmen etc (Eigennamen)
-        patternsString.add("(\\w+\\s(such as)\\s[a-z]+(\\sand\\s\\w+)?)|(\\w+\\s(such as)\\s[a-z]+)"); // andere Begriffe
-        patternsString.add("\\w+(,\\s[\\w\\s]*)*(\\sor other)\\s\\w+");
+        List<String> patternStrings = new ArrayList<String>();
+//        patternStrings.add("\\w+\\s(such as)\\s([A-Z]\\w*\\s?)+"); // Personen, Firmen etc (Eigennamen)
+        patternStrings.add("\\w*_B-NP[A-Za-z0-9_ -]*such_JJ_B-PP as_IN_I-PP [A-Za-z0-9_ -]*_I-NP"); // such as
 
-        patternsString.forEach((p) -> patterns.add(Pattern.compile(p)));
+        for (String pattern : patternStrings) {
+            patterns.add(Pattern.compile(pattern));
+        }
     }
 }

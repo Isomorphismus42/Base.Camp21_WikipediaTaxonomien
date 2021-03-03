@@ -1,3 +1,5 @@
+import opennlp.tools.chunker.ChunkerME;
+import opennlp.tools.chunker.ChunkerModel;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.sentdetect.SentenceDetectorME;
@@ -12,73 +14,106 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.StringTokenizer;
 
 // Mapper <Input Key, Input Value, Output Key, Output Value>
 public class TokenMapper extends Mapper<Object, Text, Text, IntWritable> {
 
     private final static IntWritable one = new IntWritable(1);
-    private Text line = new Text();
-    private Text result = new Text();
-    private Analyzer analyzer = new Analyzer();
+//    private Text line;
+//    private Text result;
+    private Analyzer analyzer;
     private SentenceDetectorME sentenceDetector;
     private TokenizerME tokenizer;
     private POSTaggerME posTagger;
+    private ChunkerME chunker;
 
-    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-         StringTokenizer itr = new StringTokenizer(value.toString(), "\n\r");
-//        StringTokenizer itr = new StringTokenizer(value.toString());
+    public TokenMapper() {
+//        line = new Text();
+//        result = new Text();
+        analyzer = new Analyzer();
 
+        createModels();
+    }
+
+    private void createModels() {
         // get line model
         try (InputStream sModelIn = new FileInputStream("en-sent.bin")) {
             SentenceModel sModel = new SentenceModel(sModelIn);
             sentenceDetector = new SentenceDetectorME(sModel);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
         // get tokenizer model
         try (InputStream tModelIn = new FileInputStream("en-token.bin")) {
             TokenizerModel tModel = new TokenizerModel(tModelIn);
             tokenizer = new TokenizerME(tModel);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
         // get pos tagger model
         try (InputStream posModelIn = new FileInputStream("en-pos-maxent.bin")) {
             POSModel posModel = new POSModel(posModelIn);
             posTagger = new POSTaggerME(posModel);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // get chunker model
+        try (InputStream modelIn = new FileInputStream("en-chunker.bin")){
+            ChunkerModel Cmodel = new ChunkerModel(modelIn);
+            chunker = new ChunkerME(Cmodel);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+//        StringTokenizer itr = new StringTokenizer(value.toString(), "\n\r");
+
+        String[] sentences = sentenceDetector.sentDetect(value.toString());
+
+        for (String sentence : sentences) {
+            String[] tokens = tokenizer.tokenize(sentence);
+            String[] tags = posTagger.tag(tokens);
+            String[] chunks = chunker.chunk(tokens, tags);
+
+            String taggedSentence = "";
+            for (int i=0;i< chunks.length;i++) {
+                taggedSentence += tokens[i] + "_" + tags[i] + "_" + chunks[i] + " ";
+            }
+            String result = analyzer.checkSentence(taggedSentence);
+            context.write(new Text(result), one);
+
         }
 
-        // TODO Später rausnehmen?
-        while (itr.hasMoreTokens()) {
-            line.set(itr.nextToken());
-            String[] sentences = sentenceDetector.sentDetect(line.toString());
-
-            for (int i = 0; i < sentences.length ;i++) {
-                String[] tokens = tokenizer.tokenize(sentences[i]);
-                String[] tags = posTagger.tag(tokens);
-                for (int j = 0; j<tags.length; j++) {
-                     context.write(new Text(tags[j]), one);
-                }
-            }
+//        for (int i = 0; i < sentences.length; i++) {
+//            String[] tokens = tokenizer.tokenize(sentences[i]);
+//            String[] tags = posTagger.tag(tokens);
+//            for (int j = 0; j < tags.length; j++) {
+//                context.write(new Text(tags[j]), one);
+//            }
+//        }
 
 //            ArrayList<String> groups = analyzer.checkSentence(line.toString());
 
 //            groups.forEach((s) -> {
 
 //              result = new Text(s);
-            /*  try {
-                    context.write(result, one);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } */
+//                  try {
+//                    context.write(result, one);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
 //            });
-        }
+
     }
 }
