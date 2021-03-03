@@ -19,19 +19,14 @@ import java.io.InputStream;
 public class TokenMapper extends Mapper<Object, Text, Text, IntWritable> {
 
     private final static IntWritable one = new IntWritable(1);
-//    private Text line;
-//    private Text result;
-    private Analyzer analyzer;
+    private SentenceAnalyzer sentenceAnalyzer;
     private SentenceDetectorME sentenceDetector;
     private TokenizerME tokenizer;
     private POSTaggerME posTagger;
     private ChunkerME chunker;
 
     public TokenMapper() {
-//        line = new Text();
-//        result = new Text();
-        analyzer = new Analyzer();
-
+        sentenceAnalyzer = new SentenceAnalyzer();
         createModels();
     }
 
@@ -83,14 +78,16 @@ public class TokenMapper extends Mapper<Object, Text, Text, IntWritable> {
             String[] tokens = tokenizer.tokenize(sentence);
             String[] tags = posTagger.tag(tokens);
             String[] chunks = chunker.chunk(tokens, tags);
+            //TODO:konvertiere Wöter in Singular mit Lemmatizer?
 
             String taggedSentence = "";
             for (int i=0;i< chunks.length;i++) {
                 taggedSentence += tokens[i] + "_" + tags[i] + "_" + chunks[i] + " ";
             }
-            String result = analyzer.checkSentence(taggedSentence);
-            context.write(new Text(result), one);
-
+            String[] results = sentenceAnalyzer.checkSentence(taggedSentence);
+            for (String result : results){
+                context.write(new Text(result), one);
+            }
         }
 
 //        for (int i = 0; i < sentences.length; i++) {
