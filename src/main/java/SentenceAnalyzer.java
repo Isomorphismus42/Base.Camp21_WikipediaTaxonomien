@@ -8,9 +8,12 @@ import java.util.regex.Pattern;
  */
 public class SentenceAnalyzer {
     private List<String> results;
+
     private Pattern suchAsPattern;
     private Pattern isOneOfPattern;
     private  Pattern especiallyPattern;
+
+    private Matcher patternMatcher;
 
     public SentenceAnalyzer() {
         initPatterns();
@@ -25,7 +28,7 @@ public class SentenceAnalyzer {
     public String[] checkSentence(String taggedSentence) {
         results = new ArrayList<String>();
 
-        Matcher patternMatcher = suchAsPattern.matcher(taggedSentence);
+        patternMatcher = suchAsPattern.matcher(taggedSentence);
 
         if (patternMatcher.find()) {
             //zerlege den gefunden String in Subjekt,Objekt
@@ -52,6 +55,54 @@ public class SentenceAnalyzer {
 
         patternMatcher.usePattern(isOneOfPattern);
 
+        if (patternMatcher.find()) {
+            //zerlege den gefunden String in Subjekt,Objekt
+            String[] subjectObject = patternMatcher.group().split(" (is_VBZ|are_VBP)_B-VP one_CD_B-NP of_IN_B-PP ");
+
+            //entferne "and"/"or"/"," und splitte dabei
+            String[] subjects = handleAndOrComma(subjectObject[1]);
+            String[] objects = handleAndOrComma(subjectObject[0]);
+
+            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
+            for (String subject : subjects){
+                for(String object : objects){
+                    subject = removeExpendablyWords(subject);
+                    subject = removeTags(subject);
+                    object = removeExpendablyWords(object);
+                    object = removeTags(object);
+
+                    if (!subject.isEmpty() && !object.isEmpty()) {
+                        results.add(subject + "#" + object + "#2"); //TODO: hänge später #Id zum identifizieren an
+                    }
+                }
+            }
+        }
+
+        patternMatcher.usePattern(especiallyPattern);
+
+        if (patternMatcher.find()) {
+            //zerlege den gefunden String in Subjekt,Objekt
+            String[] subjectObject = patternMatcher.group().split(" ,_,_O especially_RB_B-ADVP ");
+
+            //entferne "and"/"or"/"," und splitte dabei
+            String[] subjects = handleAndOrComma(subjectObject[0]);
+            String[] objects = handleAndOrComma(subjectObject[1]);
+
+            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
+            for (String subject : subjects){
+                for(String object : objects){
+                    subject = removeExpendablyWords(subject);
+                    subject = removeTags(subject);
+                    object = removeExpendablyWords(object);
+                    object = removeTags(object);
+
+                    if (!subject.isEmpty() && !object.isEmpty()) {
+                        results.add(subject + "#" + object + "#3"); //TODO: hänge später #Id zum identifizieren an
+                    }
+                }
+            }
+        }
+
 
 
         //TODO: weitere Patternprüfungen ergänzen
@@ -75,13 +126,15 @@ public class SentenceAnalyzer {
         //remove Determiner and all previous Words (a, an, the, that, those, some, ...)
         sentence = sentence.replaceAll("[\\w -]*_DT_(I|B)-NP ?","");
         //remove Adverbs and all previous Words (more, nearby, typically, highly, ...)
-        sentence = sentence.replaceAll("[\\w -]*_RB(R|S)?_(I|B)-NP ?","");
+        sentence = sentence.replaceAll("[\\w -]*_RB(R|S)_(I|B)-NP ?","");
         //remove Comparative adjectives and all previous Words (higher, larger, best, more, earlier, ...)
-        sentence = sentence.replaceAll("[\\w -]*_JJ(R|S)_(I|B)-NP ?","");
+        sentence = sentence.replaceAll("[\\w -]*_JJ(R|S)?_(I|B)-NP ?","");
         //remove verbs
         sentence = sentence.replaceAll("[\\w -]*_VBN_(I|B)-NP ?","");
         //remove many,several
         sentence = sentence.replaceAll("((M|m)any|(S|s)everal)_JJ_(I|B)-NP ?","");
+        // remove certain adjectives
+        sentence = sentence.replaceAll("((V|v)arious|(O|o)ther|(S|s)pecific|well-known)_JJ_(I|B)-NP ?","");
         return sentence;
     }
 
