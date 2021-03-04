@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 public class SentenceAnalyzer {
     private List<String> results;
     private Pattern suchAsPattern;
+    private Pattern isOneOfPattern;
+    private  Pattern especiallyPattern;
 
     public SentenceAnalyzer() {
         initPatterns();
@@ -23,33 +25,42 @@ public class SentenceAnalyzer {
     public String[] checkSentence(String taggedSentence) {
         results = new ArrayList<String>();
 
-        Matcher suchAsMatcher = suchAsPattern.matcher(taggedSentence);
+        Matcher patternMatcher = suchAsPattern.matcher(taggedSentence);
 
-        if (suchAsMatcher.find()) {
+        if (patternMatcher.find()) {
             //zerlege den gefunden String in Subjekt,Objekt
-            String[] subjectObject = suchAsMatcher.group().split(" such_JJ_B-PP as_IN_I-PP ");
+            String[] subjectObject = patternMatcher.group().split(" such_JJ_B-PP as_IN_I-PP ");
 
             //entferne "and"/"or"/"," und splitte dabei
             String[] subjects = handleAndOrComma(subjectObject[0]);
             String[] objects = handleAndOrComma(subjectObject[1]);
 
-            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter
+            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
             for (String subject : subjects){
                 for(String object : objects){
-                    results.add(removeExpendablyWords(subject)
-                            + "#" + removeExpendablyWords(object)); //TODO: hänge später #Id zum identifizieren an
+                    subject = removeExpendablyWords(subject);
+                    subject = removeTags(subject);
+                    object = removeExpendablyWords(object);
+                    object = removeTags(object);
+
+                    if (!subject.isEmpty() && !object.isEmpty()) {
+                        results.add(subject + "#" + object + "#1"); //TODO: hänge später #Id zum identifizieren an
+                    }
                 }
             }
         }
 
+        patternMatcher.usePattern(isOneOfPattern);
+
+
+
         //TODO: weitere Patternprüfungen ergänzen
 
-        //Gebe alle gefundenen Relationen zurück und entferne dabei die Tags
+        //Gebe alle gefundenen Relationen zurück
         if (results.isEmpty()){
             return new String[] {""};
         }
         else {
-            removeTags();
             return results.toArray(new String[0]);
         }
     }
@@ -61,10 +72,14 @@ public class SentenceAnalyzer {
      * @return der Satzteil ohne die unerwünschten Wörter als String
      */
     private String removeExpendablyWords(String sentence){
-        //remove Determiner (a, an, the, that, those, some)
-        sentence = sentence.replaceAll("[\\w]*_DT_(I|B)-NP ?","");
+        //remove Determiner and all previous Words (a, an, the, that, those, some, ...)
+        sentence = sentence.replaceAll("[\\w -]*_DT_(I|B)-NP ?","");
         //remove Adverbs and all previous Words (more, nearby, typically, highly, ...)
-        sentence = sentence.replaceAll("[\\w-_ ]*_RB(R|S)?_(I|B)-NP ?","");
+        sentence = sentence.replaceAll("[\\w -]*_RB(R|S)?_(I|B)-NP ?","");
+        //remove Comparative adjectives and all previous Words (higher, larger, best, more, earlier, ...)
+        sentence = sentence.replaceAll("[\\w -]*_JJ(R|S)_(I|B)-NP ?","");
+        //remove verbs
+        sentence = sentence.replaceAll("[\\w -]*_VBN_(I|B)-NP ?","");
         //remove many,several
         sentence = sentence.replaceAll("((M|m)any|(S|s)everal)_JJ_(I|B)-NP ?","");
         return sentence;
@@ -80,10 +95,11 @@ public class SentenceAnalyzer {
         return s.split(" and_CC_I-NP ?| and_CC_O | or_CC_I-NP ?| or_CC_O | ,_,_I-NP | ,_,_O ");
     }
 
-    private void removeTags(){
-        for (int i=0; i<results.size();i++) {
-            results.set(i,results.get(i).replaceAll("(_([A-Z]{2,4}|-LRB-))?_(I|B)-NP","").trim());
-        }
+    private String removeTags(String s){
+//        for (int i=0; i<results.size();i++) {
+//            results.set(i,results.get(i).replaceAll("(_([A-Z]{2,4}|-LRB-))?_(I|B)-NP","").trim());
+//        }
+        return s.replaceAll("(_([A-Z]{2,4}|-LRB-))?_(I|B)-NP","").trim();
     }
 
     /**
@@ -91,9 +107,17 @@ public class SentenceAnalyzer {
      */
     private void initPatterns() {
         suchAsPattern = Pattern.compile("[\\w-]*(_B-NP)( [\\w-]*_I-NP)*" +      //Wort_B-NP (ggf weitere Wörter_I-NP)
-                        " such_JJ_B-PP as_IN_I-PP " +                   //such as
+                        " such_JJ_B-PP as_IN_I-PP " +                           //such as
                         "[\\w-]*(_B-NP)( ([\\w-,]*_I-NP|and_CC_O [\\w-]*(_B-NP)|or_CC_O [\\w-]*(_B-NP)|,_,_O [\\w-]*(_B-NP)))*");
                         //Wort_B-NP (ggf weitere Wörter_I-NP auch mit "und", "oder" oder "," verkettet)
+
+        isOneOfPattern = Pattern.compile("[\\w-]*(_B-NP)( [\\w-]*_I-NP)*" +
+                " (is_VBZ|are_VBP)_B-VP one_CD_B-NP of_IN_B-PP " +
+                "[\\w-]*(_B-NP)( [\\w-]*_I-NP)*");  //Wort_B-NP (ggf weitere Wörter_I-NP)
+
+        especiallyPattern = Pattern.compile("[\\w-]*(_B-NP)( [\\w-]*_I-NP)*" +
+                " ,_,_O especially_RB_B-ADVP " +
+                "[\\w-]*(_B-NP)( ([\\w,-]*_I-NP|and_CC_O [\\w-]*(_B-NP)|or_CC_O [\\w-]*(_B-NP)|,_,_O [\\w-]*(_B-NP)))*");
 
         //TODO: weitere Pattern ergänzen
     }
