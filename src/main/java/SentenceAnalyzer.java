@@ -29,9 +29,9 @@ public class SentenceAnalyzer {
             //zerlege den gefunden String in Subjekt,Objekt
             String[] subjectObject = suchAsMatcher.group().split(" such_JJ_B-PP as_IN_I-PP ");
 
-            //entferne und/oder und splitte dabei
-            String[] subjects = handleAndOr(subjectObject[0]);
-            String[] objects = handleAndOr(subjectObject[1]);
+            //entferne "and"/"or"/"," und splitte dabei
+            String[] subjects = handleAndOrComma(subjectObject[0]);
+            String[] objects = handleAndOrComma(subjectObject[1]);
 
             //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter
             for (String subject : subjects){
@@ -71,18 +71,18 @@ public class SentenceAnalyzer {
     }
 
     /**
-     * Zerlegt einen Satzteil in mehrere Teile anhand Trenwörter "and" und "or".
+     * Zerlegt einen Satzteil in mehrere Teile anhand Trenwörter "and", "or" und ",".
      *
      * @param s der zu zerlegende Satzteil
      * @return die entstehenden Satz-Fragmente als String-Array
      */
-    private String[] handleAndOr(String s){
-        return s.split(" and_CC_I-NP ?| and_CC_O | or_CC_I-NP ?| or_CC_O ");
+    private String[] handleAndOrComma(String s){
+        return s.split(" and_CC_I-NP ?| and_CC_O | or_CC_I-NP ?| or_CC_O | ,_,_I-NP | ,_,_O ");
     }
 
     private void removeTags(){
         for (int i=0; i<results.size();i++) {
-            results.set(i,results.get(i).replaceAll("(_([A-Z]{2,4}|-LRB-))?_(I|B)-NP",""));
+            results.set(i,results.get(i).replaceAll("(_([A-Z]{2,4}|-LRB-))?_(I|B)-NP","").trim());
         }
     }
 
@@ -90,9 +90,10 @@ public class SentenceAnalyzer {
      * Erstellt die Regex Patterns, nach denen im Text geguckt werden soll
      */
     private void initPatterns() {
-        suchAsPattern =
-                Pattern.compile("[\\w-]*(_B-NP)( [\\w-]*_I-NP)* such_JJ_B-PP as_IN_I-PP [\\w-]*(_B-NP)( ([\\w-]*_I-NP|and_CC_O [\\w-]*(_B-NP)|or_CC_O [\\w-]*(_B-NP)))*");
-        //Wort_B-NP (ggf weitere Wörter_I-NP)   such as   Wort_B-NP (ggf weitere Wörter_I-NP auch mit "und" und "oder" verkettet)
+        suchAsPattern = Pattern.compile("[\\w-]*(_B-NP)( [\\w-]*_I-NP)*" +      //Wort_B-NP (ggf weitere Wörter_I-NP)
+                        " such_JJ_B-PP as_IN_I-PP " +                   //such as
+                        "[\\w-]*(_B-NP)( ([\\w-,]*_I-NP|and_CC_O [\\w-]*(_B-NP)|or_CC_O [\\w-]*(_B-NP)|,_,_O [\\w-]*(_B-NP)))*");
+                        //Wort_B-NP (ggf weitere Wörter_I-NP auch mit "und", "oder" oder "," verkettet)
 
         //TODO: weitere Pattern ergänzen
     }

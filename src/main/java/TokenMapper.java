@@ -89,28 +89,5 @@ public class TokenMapper extends Mapper<Object, Text, Text, IntWritable> {
                 context.write(new Text(result), one);
             }
         }
-
-//        for (int i = 0; i < sentences.length; i++) {
-//            String[] tokens = tokenizer.tokenize(sentences[i]);
-//            String[] tags = posTagger.tag(tokens);
-//            for (int j = 0; j < tags.length; j++) {
-//                context.write(new Text(tags[j]), one);
-//            }
-//        }
-
-//            ArrayList<String> groups = analyzer.checkSentence(line.toString());
-
-//            groups.forEach((s) -> {
-
-//              result = new Text(s);
-//                  try {
-//                    context.write(result, one);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-
     }
 }
