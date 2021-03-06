@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,8 +13,13 @@ public class SentenceAnalyzer {
     private Pattern isOneOfPattern;
     private Pattern especiallyPattern;
     private Pattern andOrOtherPattern;
+    private Pattern forExamplePattern;
+    private Pattern likePattern;
     private Matcher patternMatcher;
 
+    /**
+     * Konstruktor, initialisiert die Pattern.
+     */
     public SentenceAnalyzer() {
         initPatterns();
     }
@@ -30,13 +34,18 @@ public class SentenceAnalyzer {
         results = new ArrayList<String>();
         patternMatcher = suchAsPattern.matcher(taggedSentence);
 
-        checkSuchAsPattern();
+        checkSuchAsPattern(); //#1
 
-        checkIsOneOfPattern();
+        checkIsOneOfPattern(); //#2
 
-        checkEspeciallyPattern();
+        checkEspeciallyPattern(); //#3
 
-        checkAndOrOtherPattern();
+        checkAndOrOtherPattern(); //#4
+
+        checkForExamplePattern(); //#5
+
+        checkLikePattern(); //#6
+
 
         //Gebe alle gefundenen Relationen zurück
         if (results.isEmpty()){
@@ -49,7 +58,7 @@ public class SentenceAnalyzer {
 
     /**
      * Prüft den gegeben Satz auf das Key-Wort "especially" und fügt gefundene Matches nach Konvertierung ins
-     * VATER:KIND:3
+     * VATER#KIND#GEWICHT
      * Format, der Result-Liste hinzu.
      */
     private void checkEspeciallyPattern() {
@@ -72,15 +81,15 @@ public class SentenceAnalyzer {
                     String rmTagS = removeTags(subject);
 
                     if (!rmTagS.isEmpty() && !rmTagO.isEmpty()) {
-                        results.add(removeTags(subject).toLowerCase(Locale.ROOT) + "#" + removeTags(object).toLowerCase(Locale.ROOT) + "#3");
+                        results.add(removeTags(subject) + "#" + removeTags(object) + "#3");
 
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE#Id+a
                         if (containsAdjective(subject)){
-                            results.add(removeTags(removeAdjectives(subject)).toLowerCase(Locale.ROOT) + "#" + removeTags(subject).toLowerCase(Locale.ROOT) + "#3a");
+                            results.add(removeTags(removeAdjectives(subject)) + "#" + removeTags(subject) + "#3a");
                         }
                         if (containsAdjective(object)){
-                            results.add(removeTags(removeAdjectives(object)).toLowerCase(Locale.ROOT) + "#" + removeTags(object).toLowerCase(Locale.ROOT) + "#3a");
+                            results.add(removeTags(removeAdjectives(object)) + "#" + removeTags(object) + "#3a");
                         }
                     }
                 }
@@ -90,7 +99,7 @@ public class SentenceAnalyzer {
 
     /**
      * Prüft den gegeben Satz auf das Key-Wort "is/are one of" und fügt gefundene Matches nach Konvertierung ins
-     * VATER:KIND:2
+     * VATER#KIND#GEWICHT
      * Format, der Result-Liste hinzu.
      */
     private void checkIsOneOfPattern() {
@@ -113,15 +122,15 @@ public class SentenceAnalyzer {
                     String rmTagS = removeTags(subject);
 
                     if (!rmTagS.isEmpty() && !rmTagO.isEmpty()) {
-                        results.add(removeTags(object).toLowerCase(Locale.ROOT) + "#" + removeTags(subject).toLowerCase(Locale.ROOT) + "#2");
+                        results.add(removeTags(object) + "#" + removeTags(subject) + "#2");
 
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE#Id+a
                         if (containsAdjective(subject)){
-                            results.add(removeTags(removeAdjectives(subject)).toLowerCase(Locale.ROOT) + "#" + removeTags(subject).toLowerCase(Locale.ROOT) + "#2a");
+                            results.add(removeTags(removeAdjectives(subject)) + "#" + removeTags(subject) + "#2a");
                         }
                         if (containsAdjective(object)){
-                            results.add(removeTags(removeAdjectives(object)).toLowerCase(Locale.ROOT) + "#" + removeTags(object).toLowerCase(Locale.ROOT) + "#2a");
+                            results.add(removeTags(removeAdjectives(object)) + "#" + removeTags(object) + "#2a");
                         }
                     }
                 }
@@ -131,7 +140,7 @@ public class SentenceAnalyzer {
 
     /**
      * Prüft den gegeben Satz auf das Key-Wort "such as" und fügt gefundene Matches nach Konvertierung ins
-     * VATER:KIND:2
+     * VATER#KIND#GEWICHT
      * Format, der Result-Liste hinzu.
      */
     private void checkSuchAsPattern() {
@@ -154,15 +163,15 @@ public class SentenceAnalyzer {
                     String rmTagS = removeTags(subject);
 
                     if (!rmTagS.isEmpty() && !rmTagO.isEmpty()) {
-                        results.add(removeTags(subject).toLowerCase(Locale.ROOT) + "#" + removeTags(object).toLowerCase(Locale.ROOT) + "#1");
+                        results.add(removeTags(subject) + "#" + removeTags(object) + "#1");
 
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE#Id+a
                         if (containsAdjective(subject)){
-                            results.add(removeTags(removeAdjectives(subject)).toLowerCase(Locale.ROOT) + "#" + removeTags(subject).toLowerCase(Locale.ROOT) + "#1a");
+                            results.add(removeTags(removeAdjectives(subject)) + "#" + removeTags(subject) + "#1a");
                         }
                         if (containsAdjective(object)){
-                            results.add(removeTags(removeAdjectives(object)).toLowerCase(Locale.ROOT) + "#" + removeTags(object).toLowerCase(Locale.ROOT) + "#1a");
+                            results.add(removeTags(removeAdjectives(object)) + "#" + removeTags(object) + "#1a");
                         }
                     }
                 }
@@ -171,12 +180,121 @@ public class SentenceAnalyzer {
     }
 
     /**
-     * Prüft den gegeben Satz auf das Key-Wort "especially" und fügt gefundene Matches nach Konvertierung ins
-     * VATER:KIND:4
+     * Prüft den gegeben Satz auf das Key-Wort "and/or other" und fügt gefundene Matches nach Konvertierung ins
+     * VATER#KIND#GEWICHT
      * Format, der Result-Liste hinzu.
      */
     private void checkAndOrOtherPattern() {
         patternMatcher.usePattern(andOrOtherPattern);
+
+        if (patternMatcher.find()) {
+            //zerlege den gefunden String in Subjekt,Objekt
+            String[] subjectObject = patternMatcher.group().split(" (,_,_O )?(and_CC_O|or_CC_O) other_JJ_B-NP ");
+
+            //entferne "and"/"or"/"," und splitte dabei
+            String[] subjects = handleAndOrComma(subjectObject[0]);
+            String[] objects = handleAndOrComma(subjectObject[1]);
+
+            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
+            for (String subject : subjects){
+                for(String object : objects){
+                    subject = removeExpendablyWords(subject);
+                    object = removeExpendablyWords(object);
+                    String rmTagO = removeTags(object);
+                    String rmTagS = removeTags(subject);
+
+                    if (!rmTagS.isEmpty() && !rmTagO.isEmpty()) {
+                        results.add(removeTags(object) + "#" + removeTags(subject) + "#4");
+
+                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
+                        //OHNE ADJEKTIVE#MIT ADJEKTIVE#Id+a
+                        if (containsAdjective(subject)){
+                            results.add(removeTags(removeAdjectives(subject)) + "#" + removeTags(subject) + "#4a");
+                        }
+                        if (containsAdjective(object)){
+                            results.add(removeTags(removeAdjectives(object)) + "#" + removeTags(object) + "#4a");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Prüft den gegeben Satz auf das Key-Wort "e.g." und fügt gefundene Matches nach Konvertierung ins
+     * VATER#KIND#GEWICHT
+     * Format, der Result-Liste hinzu.
+     */
+    private void checkForExamplePattern() {
+        patternMatcher.usePattern(forExamplePattern);
+
+        if (patternMatcher.find()) {
+            //zerlege den gefunden String in Subjekt,Objekt
+            String[] subjectObject = patternMatcher.group().split(" \\(_-LRB-_((I|B)-NP|O) e_NN_(B|I)-NP .?g._NNP_I-NP ,_,_(I-NP|O) ");
+
+            //entferne "and"/"or"/"," und splitte dabei
+            String[] subjects = handleAndOrComma(subjectObject[0]);
+            String[] examples = handleAndOrComma(subjectObject[1]);
+
+            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
+            for (String subject : subjects) {
+                for (String example : examples) {
+                    subject = removeExpendablyWords(subject);
+                    example = removeExpendablyWords(example);
+                    String rmTagO = removeTags(example);
+                    String rmTagS = removeTags(subject);
+
+                    if (!rmTagS.isEmpty() && !rmTagO.isEmpty()) {
+                        results.add(removeTags(subject) + "#" + removeTags(example) + "#5");
+
+                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
+                        //OHNE ADJEKTIVE#MIT ADJEKTIVE#Id+a
+                        if (containsAdjective(subject)) {
+                            results.add(removeTags(removeAdjectives(subject)) + "#" + removeTags(subject) + "#5a");
+                        }
+                        if (containsAdjective(example)) {
+                            results.add(removeTags(removeAdjectives(example)) + "#" + removeTags(example) + "#5a");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkLikePattern() {
+        patternMatcher.usePattern(likePattern);
+
+        if (patternMatcher.find()) {
+            //zerlege den gefunden String in Subjekt,Objekt
+            String[] subjectObject = patternMatcher.group().split(" like_IN_B-PP ");
+
+            //entferne "and"/"or"/"," und splitte dabei
+            String[] subjects = handleAndOrComma(subjectObject[0]);
+            String[] objects = handleAndOrComma(subjectObject[1]);
+
+            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
+            for (String subject : subjects) {
+                for (String object : objects) {
+                    subject = removeExpendablyWords(subject);
+                    object = removeExpendablyWords(object);
+                    String rmTagO = removeTags(object);
+                    String rmTagS = removeTags(subject);
+
+                    if (!rmTagS.isEmpty() && !rmTagO.isEmpty()) {
+                        results.add(removeTags(subject) + "#" + removeTags(object) + "#6");
+
+                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
+                        //OHNE ADJEKTIVE#MIT ADJEKTIVE#Id+a
+                        if (containsAdjective(subject)) {
+                            results.add(removeTags(removeAdjectives(subject)) + "#" + removeTags(subject) + "#6a");
+                        }
+                        if (containsAdjective(object)) {
+                            results.add(removeTags(removeAdjectives(object)) + "#" + removeTags(object) + "#6a");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -201,7 +319,7 @@ public class SentenceAnalyzer {
         //remove verbs
         sentence = sentence.replaceAll("[\\w -]*_VB[A-Z]?_(I|B)-NP ?","");
         //remove many,several,other, various, important, local, common, well-known, similar, certain
-        sentence = sentence.replaceAll("[\\w -]*([Mm]any|[Ss]everal|[Oo]ther|[Vv]arious|[I]mportant|[Ll]ocal|[Cc]ommon|[Ww]ell-known|[Ss]imilar|[Cc]ertain)_JJ_(I|B)-NP ?","");
+        sentence = sentence.replaceAll("[\\w -]*(many|several|other|various|important|local|common|well-known|similar|certain)_JJ_(I|B)-NP ?","");
         return sentence;
     }
 
@@ -262,22 +380,32 @@ public class SentenceAnalyzer {
     /**
      * Erstellt die Regex Patterns, nach denen im Text geguckt werden soll
      */
+    //TODO: \\w durch \p{L} ersetzen?
     private void initPatterns() {
-        suchAsPattern = Pattern.compile("[\\w-]*(_B-NP)( [\\w-]*_I-NP)*" +      //Wort_B-NP (ggf weitere Wörter_I-NP)
+        suchAsPattern = Pattern.compile("[\\w&-]*(_B-NP)( [\\w&-]*_I-NP)*" +      //Wort_B-NP (ggf weitere Wörter_I-NP)
                         " such_JJ_B-PP as_IN_I-PP " +                           //such as
-                        "[\\w-]*(_B-NP)( ([\\w-,]*_I-NP|and_CC_O [\\w-]*(_B-NP)|or_CC_O [\\w-]*(_B-NP)|,_,_O [\\w-]*(_B-NP)))*");
+                        "[\\w&-]*(_B-NP)( ([\\w,&-]*_I-NP|and_CC_O [\\w&-]*(_B-NP)|or_CC_O [\\w&-]*(_B-NP)|,_,_O [\\w&-]*(_B-NP)))*");
                         //Wort_B-NP (ggf weitere Wörter_I-NP auch mit "und", "oder" oder "," verkettet)
 
-        isOneOfPattern = Pattern.compile("[\\w-]*(_B-NP)( [\\w-]*_I-NP)*" +
+        isOneOfPattern = Pattern.compile("[\\w&-]*(_B-NP)( [\\w&-]*_I-NP)*" +
                 " (is_VBZ|are_VBP)_B-VP one_CD_B-NP of_IN_B-PP " +
-                "[\\w-]*(_B-NP)( ([\\w-]*_I-NP|of_IN_B-PP [\\w-]*(_B-NP)|and_CC_O [\\w-]*(_B-NP)|or_CC_O [\\w-]*(_B-NP)|,_,_O [\\w-]*(_B-NP)))*");
+                "[\\w&-]*(_B-NP)( ([\\w&-]*_I-NP|of_IN_B-PP [\\w&-]*(_B-NP)|and_CC_O [\\w&-]*(_B-NP)|or_CC_O [\\w&-]*(_B-NP)|,_,_O [\\w&-]*(_B-NP)))*");
         //Wort_B-NP (ggf weitere Wörter_I-NP auch mit "und", "oder" , "," oder "of" verkettet)
 
-        especiallyPattern = Pattern.compile("[\\w-]*(_B-NP)( [\\w-]*_I-NP)*" +
+        especiallyPattern = Pattern.compile("[\\w&-]*(_B-NP)( [\\w&-]*_I-NP)*" +
                 " ,_,_O especially_RB_B-ADVP " +
-                "[\\w-]*(_B-NP)( ([\\w,-]*_I-NP|and_CC_O [\\w-]*(_B-NP)|or_CC_O [\\w-]*(_B-NP)|,_,_O [\\w-]*(_B-NP)))*");
+                "[\\w&-]*(_B-NP)( ([\\w,&-]*_I-NP|and_CC_O [\\w&-]*(_B-NP)|or_CC_O [\\w&-]*(_B-NP)|,_,_O [\\w&-]*(_B-NP)))*");
 
-        andOrOtherPattern = Pattern.compile("[\\w-]*(_B-NP)( ([\\w,-]*_I-NP|(,_,_O) [\\w-]*(_B-NP)))*( ,_,_O)? (and_CC_O|or_CC_O) other_JJ_B-NP( ([\\w-]*_I-NP|and_CC_O [\\w-]*(_B-NP)|or_CC_O [\\w-]*(_B-NP)))*");
+        andOrOtherPattern = Pattern.compile("[\\w&-]*(_B-NP)( ([\\w,&-]*_I-NP|(,_,_O) [\\w&-]*(_B-NP)))*" +
+                " (,_,_O )?(and_CC_O|or_CC_O) other_JJ_B-NP" +
+                "( ([\\w&-]*_I-NP|and_CC_O [\\w&-]*(_B-NP)|or_CC_O [\\w&-]*(_B-NP)))+");
+        forExamplePattern = Pattern.compile("[\\w&-]*(_B-NP)( [\\w&-]*_I-NP)*" +
+                " \\(_-LRB-_((I|B)-NP|O) e_NN_(B|I)-NP .?g._NNP_I-NP ,_,_(I-NP|O)" +
+                "( ([\\w,&-]*_(I|B)-NP|and_CC_O [\\w&-]*(_B-NP)|or_CC_O [\\w&-]*(_B-NP)|,_,_O [\\w&-]*(_B-NP)))+");
+
+        likePattern = Pattern.compile("[\\w&-]*(_B-NP)( [\\w&-]*_I-NP)*" +
+                " like_IN_B-PP " +
+                "[\\w&-]*(_B-NP)( ([\\w&,-]*_I-NP|(,_,_O )?and_CC_O [\\w&-]*(_B-NP)|or_CC_O [\\w&-]*(B-NP)|,_,_O [\\w&-]*(_B-NP)))*");
 
         adjectivePattern = Pattern.compile("_JJ_(I|B)-NP [\\w-]*(_NN)");
     }
