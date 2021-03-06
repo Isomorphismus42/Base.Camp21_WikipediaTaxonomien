@@ -8,7 +8,7 @@ import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
@@ -18,9 +18,9 @@ import java.io.InputStream;
 import java.util.Locale;
 
 // Mapper <Input Key, Input Value, Output Key, Output Value>
-public class TokenMapper extends Mapper<Object, Text, Text, IntWritable> {
+public class TokenMapper extends Mapper<Object, Text, Text, FloatWritable> {
 
-    private final static IntWritable one = new IntWritable(1);
+//    private final static IntWritable one = new IntWritable(1);
     private SentenceAnalyzer sentenceAnalyzer;
     private SentenceDetectorME sentenceDetector;
     private TokenizerME tokenizer;
@@ -51,16 +51,16 @@ public class TokenMapper extends Mapper<Object, Text, Text, IntWritable> {
             String[] tokens = tokenizer.tokenize(sentence);
             String[] tags = posTagger.tag(tokens);
             String[] chunks = chunker.chunk(tokens, tags);
-//            String[] lemmas = lemmatizer.lemmatize(tokens, tags);
+            String[] lemmas = lemmatizer.lemmatize(tokens, tags);
 
             String taggedSentence = "";
             for (int i=0;i< chunks.length;i++) {
-                //Ersetze Pluralnomen durch ihre Singular Form TODO:NNPS hinzufügen?
-//                if (tags[i].equals("NNS")) {
-//                    tokens[i] = lemmas[i];
-//                }
+                //Ersetze Pluralnomen durch ihre Singular Form
+                if (tags[i].equals("NNS")) {
+                    tokens[i] = lemmas[i];
+                }
                 //Schreibe alle Wörter außer Eigennamen klein
-                if (!(tags[i].equals("NNP")|tags[i].equals("NNPS"))){
+                if (!(tags[i].equals("NNP") || tags[i].equals("NNPS"))){
                     tokens[i] = tokens[i].toLowerCase(Locale.ROOT);
                 }
                 //Baue den zu untersuchenden Satz mit Wort- und Chunk-Tag
@@ -74,47 +74,18 @@ public class TokenMapper extends Mapper<Object, Text, Text, IntWritable> {
             for (String result : results){
 
 //                weighedResult(result);
-                //TODO: Gewichte einbauen im Format "0.XX"
-//                if (!result.equals("")) {
-//                    float weight = Float.parseFloat(result.substring(result.length() - 4, result.length()));
-//                    result = result.substring(0, result.length() - 4);
-//                    context.write(new Text(result), new FloatWritable(weight));
-//                }
+                if (!result.equals("")) {
+                    float weight = Float.parseFloat(result.substring(result.length() - 4));
+                    result = result.substring(0, result.length() - 4);
+                    context.write(new Text(result), new FloatWritable(weight));
+                }
 
-
-                context.write(new Text(result), one);
+//                context.write(new Text(result), one);
 
 //                context.write(new Text(result), new IntWritable(weight));
             }
         }
     }
-
-    private String weighedResult(String result){
-        int weight = 0;
-                if (result.length() > 2) {
-                    String tag = result.substring(result.length() - 2).replace("#","");
-                    switch (tag) {
-                        case "1":
-                        case "1a":
-                            weight = 4; break;
-                        case "2":
-                        case "2a":
-                            weight = 3; break;
-                        case "3":
-                        case "3a":
-                            weight = 3; break;
-                        default: break;
-                    }
-                    // Schneidet den Tag vom Ergebnis ab
-                    return result.substring(0,result.indexOf("#", result.indexOf("#") + 1));
-                }
-                else {
-                    return "";
-                }
-    }
-
-
-
 
     private void createModels() throws IOException {
         // get line model
@@ -137,6 +108,7 @@ public class TokenMapper extends Mapper<Object, Text, Text, IntWritable> {
             ChunkerModel Cmodel = new ChunkerModel(cModelIn);
             chunker = new ChunkerME(Cmodel);
         }
+        // get lemmatizer model
         try (InputStream lModelIn = new FileInputStream("en-lemmatizer.bin")) {
             LemmatizerModel lModel = new LemmatizerModel(lModelIn);
             lemmatizer = new LemmatizerME(lModel);
