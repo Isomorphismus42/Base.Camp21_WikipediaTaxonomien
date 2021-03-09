@@ -38,6 +38,7 @@ public class SentenceAnalyzer {
 
         checkSuchAsPattern();     //#1  [Noun Phrase] such as [Noun Phrases]
         checkIsOneOfPattern();    //#2  ^[Noun Phrase] is {a {group|member}|part|one} of [Noun Phrases]
+        checkIsOneOfPattern();    //#2  ^[Noun Phrase] is {a {group|member}|part|one} of [Noun Phrases]
         checkEspeciallyPattern(); //#3  [Noun Phrase] , especially [Noun Phrases]
         checkAndOrOtherPattern(); //#4  [Noun Phrase] {and|or} other [Noun Phrases]
         checkForExamplePattern(); //#5  [Noun Phrase] (e.g., [Noun Phrases]
@@ -69,31 +70,7 @@ public class SentenceAnalyzer {
             String[] subjects = handleAndOrComma(subjectObject[0]);
             String[] objects = handleAndOrComma(subjectObject[1]);
 
-            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
-            for (String subject : subjects) {
-                subject = removeExpendablyWords(subject);
-                boolean useful = containsNoun(subject);
-                boolean adjS = containsAdjective(subject);
-                subject = removeTags(subject);
-
-                for (String object : objects) {
-                    object = removeExpendablyWords(object);
-                    useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
-                    boolean adjO = containsAdjective(object);
-                    object = removeTags(object);
-                    if (useful) {
-                        results.add(subject + "\t" + object + "0.59");
-                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
-                        //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (adjO) {
-                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
-                        }
-                    }
-                }
-                if (useful && adjS) {
-                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
-                }
-            }
+            createTaxonomyRelations(subjects,objects,"0.59");
         }
     }
 
@@ -113,31 +90,7 @@ public class SentenceAnalyzer {
             String[] subjects = handleAndOrComma(subjectObject[0]);
             String[] objects = handleAndOrCommaOf(subjectObject[1]);
 
-            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
-            for (String subject : subjects) {
-                subject = removeExpendablyWords(subject);
-                boolean useful = containsNoun(subject);
-                boolean adjS = containsAdjective(subject);
-                subject = removeTags(subject);
-
-                for (String object : objects) {
-                    object = removeExpendablyWords(object);
-                    useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
-                    boolean adjO = containsAdjective(object);
-                    object = removeTags(object);
-                    if (useful) {
-                        results.add(object + "\t" + subject + "0.48");
-                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
-                        //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (adjO) {
-                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
-                        }
-                    }
-                }
-                if (useful && adjS) {
-                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
-                }
-            }
+            createTaxonomyRelations(objects,subjects,"0.48");
         }
     }
 
@@ -157,31 +110,7 @@ public class SentenceAnalyzer {
             String[] subjects = handleAndOrComma(subjectObject[0]);
             String[] objects = handleAndOrComma(subjectObject[1]);
 
-            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
-            for (String subject : subjects) {
-                subject = removeExpendablyWords(subject);
-                boolean useful = containsNoun(subject);
-                boolean adjS = containsAdjective(subject);
-                subject = removeTags(subject);
-
-                for (String object : objects) {
-                    object = removeExpendablyWords(object);
-                    useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
-                    boolean adjO = containsAdjective(object);
-                    object = removeTags(object);
-                    if (useful) {
-                        results.add(subject + "\t" + object + "0.68");
-                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
-                        //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (adjO) {
-                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
-                        }
-                    }
-                }
-                if (useful && adjS) {
-                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
-                }
-            }
+            createTaxonomyRelations(subjects,objects,"0.68");
         }
     }
 
@@ -201,31 +130,7 @@ public class SentenceAnalyzer {
             String[] subjects = handleAndOrComma(subjectObject[0]);
             String[] objects = handleAndOrComma(subjectObject[1]);
 
-            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
-            for (String subject : subjects) {
-                subject = removeExpendablyWords(subject);
-                boolean useful = containsNoun(subject);
-                boolean adjS = containsAdjective(subject);
-                subject = removeTags(subject);
-
-                for (String object : objects) {
-                    object = removeExpendablyWords(object);
-                    useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
-                    boolean adjO = containsAdjective(object);
-                    object = removeTags(object);
-                    if (useful) {
-                        results.add(object + "\t" + subject + "0.65");
-                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
-                        //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (adjO) {
-                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
-                        }
-                    }
-                }
-                if (useful && adjS) {
-                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
-                }
-            }
+            createTaxonomyRelations(objects,subjects,"0.65");
         }
     }
 
@@ -245,31 +150,7 @@ public class SentenceAnalyzer {
             String[] subjects = handleAndOrComma(subjectObject[0]);
             String[] examples = handleAndOrComma(subjectObject[1]);
 
-            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
-            for (String subject : subjects) {
-                subject = removeExpendablyWords(subject);
-                boolean useful = containsNoun(subject);
-                boolean adjS = containsAdjective(subject);
-                subject = removeTags(subject);
-
-                for (String object : examples) {
-                    object = removeExpendablyWords(object);
-                    useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
-                    boolean adjO = containsAdjective(object);
-                    object = removeTags(object);
-                    if (useful) {
-                        results.add(subject + "\t" + object + "0.53");
-                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
-                        //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (adjO) {
-                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
-                        }
-                    }
-                }
-                if (useful && adjS) {
-                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
-                }
-            }
+            createTaxonomyRelations(subjects,examples,"0.53");
         }
     }
 
@@ -284,31 +165,7 @@ public class SentenceAnalyzer {
             String[] subjects = handleAndOrComma(subjectObject[0]);
             String[] objects = handleAndOrComma(subjectObject[1]);
 
-            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
-            for (String subject : subjects) {
-                subject = removeExpendablyWords(subject);
-                boolean useful = containsNoun(subject);
-                boolean adjS = containsAdjective(subject);
-                subject = removeTags(subject);
-
-                for (String object : objects) {
-                    object = removeExpendablyWords(object);
-                    useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
-                    boolean adjO = containsAdjective(object);
-                    object = removeTags(object);
-                    if (useful) {
-                        results.add(subject + "\t" + object + "0.67");
-                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
-                        //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (adjO) {
-                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
-                        }
-                    }
-                }
-                if (useful && adjS) {
-                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
-                }
-            }
+            createTaxonomyRelations(subjects,objects,"0.67");
         }
     }
 
@@ -319,34 +176,44 @@ public class SentenceAnalyzer {
             //zerlege den gefunden String in Subjekt,Objekt
             String[] subjectObject = patternMatcher.group().split(" is_VBZ_B-VP an?_DT_B-NP ");
 
-            String subject = subjectObject[0];
             //entferne "and"/"or"/"," und splitte dabei
+            String[] subjects = handleAndOrComma(subjectObject[0]);
             String[] objects = handleAndOrComma(subjectObject[1]);
 
-            //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
-                subject = removeExpendablyWords(subject);
-                boolean useful = containsNoun(subject);
-                boolean adjS = containsAdjective(subject);
-                subject = removeTags(subject);
+            createTaxonomyRelations(objects,subjects,"0.60");
+        }
+    }
 
-                for (String object : objects) {
-                    object = removeExpendablyWords(object);
-                    useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
-                    boolean adjO = containsAdjective(object);
-                    object = removeTags(object);
-                    if (useful) {
-                        results.add(object + "\t" + subject + "0.60");
-                        //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
-                        //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (adjO) {
-                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
-                        }
+    /**
+     * Baut die VATER KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
+     *
+     * @param parents
+     * @param children
+     * @param weight
+     */
+    private void createTaxonomyRelations(String[] parents,String[] children, String weight) {
+        for (String parent : parents) {
+            parent = removeExpendablyWords(parent);
+            boolean taxonomyAdded = false;
+
+            for (String child : children) {
+                child = removeExpendablyWords(child);
+
+                //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
+                if (containsNoun(parent) && containsNoun(child)) {
+                    results.add(removeTags(parent) + "\t" + removeTags(child) + weight);
+                    taxonomyAdded = true;
+
+                    //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
+                    //OHNE ADJEKTIVE#MIT ADJEKTIVE
+                    if (containsAdjective(child)) {
+                        results.add(removeTags(removeAdjectives(child)) + "\t" + removeTags(child) + "0.55");
                     }
                 }
-                if (useful && adjS) {
-                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
-                }
-
+            }
+            if (taxonomyAdded && containsAdjective(parent)) {
+                results.add(removeTags(removeAdjectives(parent)) + "\t" + removeTags(parent) + "0.55");
+            }
         }
     }
 
