@@ -73,23 +73,25 @@ public class SentenceAnalyzer {
             for (String subject : subjects) {
                 subject = removeExpendablyWords(subject);
                 boolean useful = containsNoun(subject);
+                boolean adjS = containsAdjective(subject);
                 subject = removeTags(subject);
 
                 for (String object : objects) {
                     object = removeExpendablyWords(object);
                     useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
+                    boolean adjO = containsAdjective(object);
                     object = removeTags(object);
                     if (useful) {
-                        results.add(subject + "#" + object + "0.89");
+                        results.add(subject + "\t" + object + "0.59");
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (containsAdjective(object)) {
-                            results.add(removeTags(removeAdjectives(object)) + "#" + object + "0.70");
+                        if (adjO) {
+                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
                         }
                     }
                 }
-                if (useful && containsAdjective(subject)) {
-                    results.add(removeTags(removeAdjectives(subject)) + "#" + subject + "0.70");
+                if (useful && adjS) {
+                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
                 }
             }
         }
@@ -115,23 +117,25 @@ public class SentenceAnalyzer {
             for (String subject : subjects) {
                 subject = removeExpendablyWords(subject);
                 boolean useful = containsNoun(subject);
+                boolean adjS = containsAdjective(subject);
                 subject = removeTags(subject);
 
                 for (String object : objects) {
                     object = removeExpendablyWords(object);
                     useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
+                    boolean adjO = containsAdjective(object);
                     object = removeTags(object);
                     if (useful) {
-                        results.add(object + "#" + subject + "0.65");
+                        results.add(object + "\t" + subject + "0.48");
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (containsAdjective(object)) {
-                            results.add(removeTags(removeAdjectives(object)) + "#" + object + "0.70");
+                        if (adjO) {
+                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
                         }
                     }
                 }
-                if (useful && containsAdjective(subject)) {
-                    results.add(removeTags(removeAdjectives(subject)) + "#" + subject + "0.70");
+                if (useful && adjS) {
+                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
                 }
             }
         }
@@ -157,23 +161,25 @@ public class SentenceAnalyzer {
             for (String subject : subjects) {
                 subject = removeExpendablyWords(subject);
                 boolean useful = containsNoun(subject);
+                boolean adjS = containsAdjective(subject);
                 subject = removeTags(subject);
 
                 for (String object : objects) {
                     object = removeExpendablyWords(object);
                     useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
+                    boolean adjO = containsAdjective(object);
                     object = removeTags(object);
                     if (useful) {
-                        results.add(subject + "#" + object + "0.88");
+                        results.add(subject + "\t" + object + "0.68");
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (containsAdjective(object)) {
-                            results.add(removeTags(removeAdjectives(object)) + "#" + object + "0.70");
+                        if (adjO) {
+                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
                         }
                     }
                 }
-                if (useful && containsAdjective(subject)) {
-                    results.add(removeTags(removeAdjectives(subject)) + "#" + subject + "0.70");
+                if (useful && adjS) {
+                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
                 }
             }
         }
@@ -199,23 +205,25 @@ public class SentenceAnalyzer {
             for (String subject : subjects) {
                 subject = removeExpendablyWords(subject);
                 boolean useful = containsNoun(subject);
+                boolean adjS = containsAdjective(subject);
                 subject = removeTags(subject);
 
                 for (String object : objects) {
                     object = removeExpendablyWords(object);
                     useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
+                    boolean adjO = containsAdjective(object);
                     object = removeTags(object);
                     if (useful) {
-                        results.add(object + "#" + subject + "0.80");
+                        results.add(object + "\t" + subject + "0.65");
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (containsAdjective(object)) {
-                            results.add(removeTags(removeAdjectives(object)) + "#" + object + "0.70");
+                        if (adjO) {
+                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
                         }
                     }
                 }
-                if (useful && containsAdjective(subject)) {
-                    results.add(removeTags(removeAdjectives(subject)) + "#" + subject + "0.70");
+                if (useful && adjS) {
+                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
                 }
             }
         }
@@ -241,23 +249,25 @@ public class SentenceAnalyzer {
             for (String subject : subjects) {
                 subject = removeExpendablyWords(subject);
                 boolean useful = containsNoun(subject);
+                boolean adjS = containsAdjective(subject);
                 subject = removeTags(subject);
 
                 for (String object : examples) {
                     object = removeExpendablyWords(object);
                     useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
+                    boolean adjO = containsAdjective(object);
                     object = removeTags(object);
                     if (useful) {
-                        results.add(subject + "#" + object + "0.79");
+                        results.add(subject + "\t" + object + "0.53");
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (containsAdjective(object)) {
-                            results.add(removeTags(removeAdjectives(object)) + "#" + object + "0.70");
+                        if (adjO) {
+                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
                         }
                     }
                 }
-                if (useful && containsAdjective(subject)) {
-                    results.add(removeTags(removeAdjectives(subject)) + "#" + subject + "0.70");
+                if (useful && adjS) {
+                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
                 }
             }
         }
@@ -278,23 +288,25 @@ public class SentenceAnalyzer {
             for (String subject : subjects) {
                 subject = removeExpendablyWords(subject);
                 boolean useful = containsNoun(subject);
+                boolean adjS = containsAdjective(subject);
                 subject = removeTags(subject);
 
                 for (String object : objects) {
                     object = removeExpendablyWords(object);
                     useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
+                    boolean adjO = containsAdjective(object);
                     object = removeTags(object);
                     if (useful) {
-                        results.add(subject + "#" + object + "0.82");
+                        results.add(subject + "\t" + object + "0.67");
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (containsAdjective(object)) {
-                            results.add(removeTags(removeAdjectives(object)) + "#" + object + "0.70");
+                        if (adjO) {
+                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
                         }
                     }
                 }
-                if (useful && containsAdjective(subject)) {
-                    results.add(removeTags(removeAdjectives(subject)) + "#" + subject + "0.70");
+                if (useful && adjS) {
+                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
                 }
             }
         }
@@ -305,7 +317,7 @@ public class SentenceAnalyzer {
 
         if (patternMatcher.find()) {
             //zerlege den gefunden String in Subjekt,Objekt
-            String[] subjectObject = patternMatcher.group().split(" is_VBZ_B-VP a_DT_B-NP ");
+            String[] subjectObject = patternMatcher.group().split(" is_VBZ_B-VP an?_DT_B-NP ");
 
             String subject = subjectObject[0];
             //entferne "and"/"or"/"," und splitte dabei
@@ -314,23 +326,25 @@ public class SentenceAnalyzer {
             //baut die VATER#KIND-Relation als String und entfernt dabei unerwünschte Wörter und die Tags
                 subject = removeExpendablyWords(subject);
                 boolean useful = containsNoun(subject);
+                boolean adjS = containsAdjective(subject);
                 subject = removeTags(subject);
 
                 for (String object : objects) {
                     object = removeExpendablyWords(object);
                     useful = useful && containsNoun(object);       //Treffer ist nur nützlich, wenn mindestens ein Nomen in beiden Phrasen enthält
+                    boolean adjO = containsAdjective(object);
                     object = removeTags(object);
                     if (useful) {
-                        results.add(subject + "#" + object + "0.75");
+                        results.add(object + "\t" + subject + "0.60");
                         //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
                         //OHNE ADJEKTIVE#MIT ADJEKTIVE
-                        if (containsAdjective(object)) {
-                            results.add(removeTags(removeAdjectives(object)) + "#" + object + "0.70");
+                        if (adjO) {
+                            results.add(removeTags(removeAdjectives(object)) + "\t" + object + "0.55");
                         }
                     }
                 }
-                if (useful && containsAdjective(subject)) {
-                    results.add(removeTags(removeAdjectives(subject)) + "#" + subject + "0.70");
+                if (useful && adjS) {
+                    results.add(removeTags(removeAdjectives(subject)) + "\t" + subject + "0.55");
                 }
 
         }
@@ -363,7 +377,7 @@ public class SentenceAnalyzer {
         sentence = sentence.replaceAll("[\\w -]*_VB[A-Z]?_(I|B)-NP ?","");
         //remove unwanted adjectives
         sentence = sentence.replaceAll("[\\w -]*(many|several|other|various|important|local|common|well-known|similar|certain" +
-                "|nearby|numerous|different|diverse|early|major|very|few|regional|such|famous|popular|main)_JJ_(I|B)-NP ?","");
+                "|nearby|numerous|different|diverse|early|major|very|few|regional|such|famous|popular|main|notable)_JJ_(I|B)-NP ?","");
         //remove unwanted nouns
         sentence = sentence.replaceAll("member_NNS?_(I|B)-NP ?","");
         return sentence;
@@ -396,7 +410,7 @@ public class SentenceAnalyzer {
      * @return der String ohne Wort-Tags
      */
     private String removeTags(String s){
-        return s.replaceAll("(_(([A-Z]{2,4}|-(L|R)RB-)|''|``))?_(I|B)-(NP|O)","").replaceAll("_|,","").trim();
+        return s.replaceAll("(_(([A-Z]{2,4}|-(L|R)RB-)|''|``))?_(I|B)-(NP|O)","").replaceAll("_|`|'|,","").trim();
     }
 
     /**
@@ -460,7 +474,7 @@ public class SentenceAnalyzer {
                 "[\\w&-]*(_B-NP)( ([\\w&,-]*_I-NP|(,_,_O )?and_CC_O [\\w&-]*(_B-NP)|or_CC_O [\\w&-]*(B-NP)|,_,_O [\\w&-]*(_B-NP)))*");
 
         isAPattern = Pattern.compile("^(\"_``_(O|B-NP) )?[\\w\"&-]*(_(B|I)-NP)( [\\w&-]*_I-NP)*( \"_''_(O|I-NP))?" +
-                " is_VBZ_B-VP a_DT_B-NP " +
+                " is_VBZ_B-VP an?_DT_B-NP " +
                 "[\\w&-]*(_I-NP)( [\\w&-]*_I-NP)*");
 
         adjectivePattern = Pattern.compile("_JJ_");

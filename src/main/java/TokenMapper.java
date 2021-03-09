@@ -72,17 +72,11 @@ public class TokenMapper extends Mapper<Object, Text, Text, FloatWritable> {
 
             //Übergebe die gefundenen Relationen
             for (String result : results){
-
-//                weighedResult(result);
                 if (!result.equals("")) {
                     float weight = Float.parseFloat(result.substring(result.length() - 4));
                     result = result.substring(0, result.length() - 4);
                     context.write(new Text(result), new FloatWritable(weight));
                 }
-
-//                context.write(new Text(result), one);
-
-//                context.write(new Text(result), new IntWritable(weight));
             }
         }
     }
