@@ -9,6 +9,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+// Tool implementiert um Parameter übergabe in der Konsole zu ermöglichen.
 public class TaxonomySearcher extends Configured implements Tool {
 
     public static void main(String[] args) throws Exception {

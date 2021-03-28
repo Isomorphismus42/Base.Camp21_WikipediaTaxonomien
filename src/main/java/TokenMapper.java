@@ -20,7 +20,6 @@ import java.util.Locale;
 // Mapper <Input Key, Input Value, Output Key, Output Value>
 public class TokenMapper extends Mapper<Object, Text, Text, FloatWritable> {
 
-//    private final static IntWritable one = new IntWritable(1);
     private SentenceAnalyzer sentenceAnalyzer;
     private SentenceDetectorME sentenceDetector;
     private TokenizerME tokenizer;
@@ -29,7 +28,7 @@ public class TokenMapper extends Mapper<Object, Text, Text, FloatWritable> {
     private LemmatizerME lemmatizer;
 
     /**
-     * Konstruktor, initialisiert die POS-Modelle.
+     * Konstruktor, initialisiert die Part-of-Speech-Modelle.
      */
     public TokenMapper() {
         sentenceAnalyzer = new SentenceAnalyzer();
@@ -40,6 +39,16 @@ public class TokenMapper extends Mapper<Object, Text, Text, FloatWritable> {
         }
     }
 
+    /**
+     * Main-Methode. Führt das Part-Of-Speech Tagging aus und übergibt den formatierten und getagten Satz zur Analyse
+     * an den SentenceAnalyser. Abschließend werden die gefundenen Ergebnisse in den Context geschrieben.
+     *
+     * @param key Der zugehörige Key
+     * @param value Die zu analysierende Textzeile
+     * @param context Der Context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 //        StringTokenizer itr = new StringTokenizer(value.toString(), "\n\r");
 
@@ -81,6 +90,11 @@ public class TokenMapper extends Mapper<Object, Text, Text, FloatWritable> {
         }
     }
 
+    /**
+     * Läd und initialisiert die Part-of-Speech Modelle.
+     *
+     * @throws IOException
+     */
     private void createModels() throws IOException {
         // get line model
         try (InputStream sModelIn = new FileInputStream("en-sent.bin")) {
