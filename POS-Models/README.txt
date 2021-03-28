@@ -13,7 +13,7 @@ https://opennlp.apache.org/docs/1.9.3/apidocs/opennlp-tools/
 Die Bedeutung der Tags richtet sich nach dem Penn Treebank tag set:
 https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 
-Number	Tag		Description
+Number	Tag	Description
 1. 	CC 	Coordinating conjunction
 2. 	CD 	Cardinal number
 3. 	DT 	Determiner
