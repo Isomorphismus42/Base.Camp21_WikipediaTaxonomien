@@ -17,14 +17,14 @@ Number	Tag		Description
 1. 	CC 	Coordinating conjunction
 2. 	CD 	Cardinal number
 3. 	DT 	Determiner
-4. 	EX      Existential there
+4. 	EX 	Existential there
 5. 	FW 	Foreign word
 6. 	IN 	Preposition or subordinating conjunction
-7. 	JJ      Adjective
+7. 	JJ 	Adjective
 8. 	JJR 	Adjective, comparative
-9. 	JJS   Adjective, superlative
-10. 	LS  List item marker
-11. 	MD  Modal
+9. 	JJS 	Adjective, superlative
+10. 	LS 	List item marker
+11. 	MD 	Modal
 12. 	NN 	Noun, singular or mass
 13. 	NNS 	Noun, plural
 14. 	NNP 	Proper noun, singular
@@ -33,14 +33,14 @@ Number	Tag		Description
 17. 	POS 	Possessive ending
 18. 	PRP 	Personal pronoun
 19. 	PRP$ 	Possessive pronoun
-20. 	RB 		Adverb
+20. 	RB 	Adverb
 21. 	RBR 	Adverb, comparative
 22. 	RBS 	Adverb, superlative
-23. 	RP 		Particle
+23. 	RP 	Particle
 24. 	SYM 	Symbol
-25. 	TO 		to
-26. 	UH 		Interjection
-27. 	VB 		Verb, base form
+25. 	TO 	to
+26. 	UH 	Interjection
+27. 	VB 	Verb, base form
 28. 	VBD 	Verb, past tense
 29. 	VBG 	Verb, gerund or present participle
 30. 	VBN 	Verb, past participle
