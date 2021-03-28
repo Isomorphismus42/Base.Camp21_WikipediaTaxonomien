@@ -17,10 +17,10 @@ Number	Tag		Description
 1. 	CC 	Coordinating conjunction
 2. 	CD 	Cardinal number
 3. 	DT 	Determiner
-4. 	EX    Existential there
+4. 	EX      Existential there
 5. 	FW 	Foreign word
 6. 	IN 	Preposition or subordinating conjunction
-7. 	JJ    Adjective
+7. 	JJ      Adjective
 8. 	JJR 	Adjective, comparative
 9. 	JJS   Adjective, superlative
 10. 	LS  List item marker
