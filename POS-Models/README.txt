@@ -14,18 +14,18 @@ Die Bedeutung der Tags richtet sich nach dem Penn Treebank tag set:
 https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 
 Number	Tag		Description
-1. 	CC 		Coordinating conjunction
-2. 	CD 		Cardinal number
-3. 	DT 		Determiner
-4. 	EX 		Existential there
-5. 	FW 		Foreign word
-6. 	IN 		Preposition or subordinating conjunction
-7. 	JJ 		Adjective
+1. 	CC 	Coordinating conjunction
+2. 	CD 	Cardinal number
+3. 	DT 	Determiner
+4. 	EX 	Existential there
+5. 	FW 	Foreign word
+6. 	IN 	Preposition or subordinating conjunction
+7. 	JJ 	Adjective
 8. 	JJR 	Adjective, comparative
 9. 	JJS 	Adjective, superlative
-10. 	LS 		List item marker
-11. 	MD 		Modal
-12. 	NN 		Noun, singular or mass
+10. 	LS 	List item marker
+11. 	MD 	Modal
+12. 	NN 	Noun, singular or mass
 13. 	NNS 	Noun, plural
 14. 	NNP 	Proper noun, singular
 15. 	NNPS 	Proper noun, plural
@@ -47,7 +47,7 @@ Number	Tag		Description
 31. 	VBP 	Verb, non-3rd person singular present
 32. 	VBZ 	Verb, 3rd person singular present
 33. 	WDT 	Wh-determiner
-34. 	WP 		Wh-pronoun
+34. 	WP 	Wh-pronoun
 35. 	WP$ 	Possessive wh-pronoun
 36. 	WRB 	Wh-adverb 
 
