@@ -338,11 +338,9 @@ public class SentenceAnalyzer {
         return s.replaceAll("[\\p{L}0-9_ -]*_JJ_(I|B)-NP ","");
     }
 
-
     /**
      * Erstellt die Regex Patterns, nach denen im Text geguckt werden soll
      */
-    //TODO: \\p{L}0-9_ durch \p{L}_ ersetzen?
     private void initPatterns() {
         suchAsPattern = Pattern.compile("[\\p{L}0-9_&-]*(_B-NP)( [\\p{L}0-9_&-]*_I-NP)*" +
                         " such_JJ_B-PP as_IN_I-PP " +
