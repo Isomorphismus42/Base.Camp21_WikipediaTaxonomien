@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wikitax</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link th:href="@{/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="./home">Wikitax</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="./home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./app">Browser</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="./about">About</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="accordion-section clearfix mt-3" aria-label="Question Accordions">
+    <div class="container">
+
+        <h2>About the project </h2>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+            <div class="panel panel-default">
+                <div class="panel-heading p-3 mb-3" role="tab" id="heading0">
+                    <h3 class="panel-title">
+                        <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse0" aria-expanded="true" aria-controls="collapse0">
+                            What is Wikitax?
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapse0" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading0">
+                    <div class="panel-body px-3 mb-4">
+                        <p>The aim of Wikitax is to build a collection of taxonomic relationships by analyzing
+                            the English Wikipedia content using methods of Big Data analysis.
+                            We used Hadoop and MapReduce to analyze a wikipedia dump file with various methods and tool.</p>
+                        <br>
+                        <p> A taxonomy is a scheme of classification of things, concepts or organisms into groups or types.</p>
+                        <p>    An example of a taxonomy relation is: European wildcat → cat → predator → animal → eukaryote. </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading p-3 mb-3" role="tab" id="heading1">
+                    <h3 class="panel-title">
+                        <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                            How to use the Browser?
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
+                    <div class="panel-body px-3 mb-4">
+                        <p>You can show the taxonomy diagram for a custom keyword by entering the word into the search
+                            field and pressing the search button. An empty node will be returned, if your query doesn't
+                            have valid children in our database.</p>
+                        <br>
+                        <p> Next to the search button you have four suggestions, randomly chosen from the database.
+                            Note that the suggestions are uncurated and could be low quality keywords.</p>
+                        <br>
+                        <p>  The "Random" button allows you to randomly load a taxonomy from the database.</p>
+                        <br>
+                        <p> Any parent node can be clicked on to collapse the tree below of it and can be clicked on again to regrow. </p>
+                        <br>
+                        <p> Clicking a leaf will load more children, if any exist.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading p-3 mb-3" role="tab" id="heading2">
+                    <h3 class="panel-title">
+                        <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                            How was our data created?
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+                    <div class="panel-body px-3 mb-4">
+                        <p> The dump data of the English Wikipedia (version from 22.02.2021) was downloaded as an XML-file
+                            and converted into .txt-files, which had the vast majority of XML tags removed.
+                        <br> The files were then saved using the Hadoop File System to allow analyzing the data with MapReduce.
+
+                        <br><br> Taxonomy relationships were identified using multiple regular expression patterns. To allow for more
+                        precise analyzing and better results the raw text was part of speech tagged, chunked and partly
+                        lemmatized using Apache OpenNLP. The tokenizer and sentence detector were also applied.
+                        <br> We assigned each of the used regex patterns a weight between 0 and 1, to reflect the
+                        probability that the found parent-child pair was indeed a hypernym-hyponym relationship. The actual probabilities used
+                        were a mix between being derived from our own sample tests and numbers that we took from scientific papers.</p>
+                        <br>
+                        Patterns used for the final results:
+                        <ul>
+                            <li> suchAsPattern </li>
+                            <li> isOneOfPattern </li>
+                            <li> especiallyPattern </li>
+                            <li> andOrOtherPattern </li>
+                            <li> forExamplePattern </li>
+                            <li> likePattern </li>
+                            <li> isAPattern </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading p-3 mb-3" role="tab" id="heading3">
+                    <h3 class="panel-title">
+                        <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                            How is the data being accessed?
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+                    <div class="panel-body px-3 mb-4">
+                        <p>We store the hypernym-hyponym pairs with their corresponding summed weight in a MySQL database. </p>
+                        Accessing it is made possible with the API that you can find at:
+                        <a class="nav-link" href="./api">/api</a>
+                        There are two types of requests possible:
+                        <ol>
+                            <li> Get the children of a parent</li>
+                            <li> Get a JSON Object representing the 4 levels deep tree from the parent node</li>
+                        </ol>
+                        <br>
+
+                        The first one can be accessed by giving a parent parameter.
+                        <br>
+                        Example: Get the children of country: <a class="nav-link" href="./api?parent=Country">/api?parent=Country</a>
+                        <br>
+                        This returns a JSON array like: <code> ["United States","Australia","China","Canada","India","Japan"] </code>
+                        <br><br>
+                        The second one can be accessed by giving a root parameter.
+                        <br>
+                        Example: Get a tree with country as the root node: <a class="nav-link" href="./api?root=Country">/api?root=Country</a>
+
+                        This returns a JSON object representing a tree, in the following form:
+                        <code>
+                            {
+                             "parent": "null",
+                             "name": "rootName",
+                             "children": [
+                                 {
+                                 "parent": "root",
+                                 "name": "Layer1Child",
+                                 "children": [
+                                    {
+                                    "parent" : "Layer1Child",
+                                    "name": "Layer2Child"
+                                        }
+                                    ]
+                                  }
+                              ]
+                            }
+                        </code>
+
+                        <br><br>
+                        Note that only the six highest weighted children are returned.
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading p-3 mb-3" role="tab" id="heading4">
+                    <h3 class="panel-title">
+                        <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                            How is the tree visualization created?
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+                    <div class="panel-body px-3 mb-4">
+                        This webpage is created with the help of Bootstrap and Thymeleaf.
+                        <br><br>
+                        The visualization on the Browser page is using the D3 Javascript framework.
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading p-3 mb-3" role="tab" id="heading5">
+                    <h3 class="panel-title">
+                        <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="true" aria-controls="collapse5">
+                            Resources
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
+                    <div class="panel-body px-3 mb-4">
+                        <h3>Libraries and Tools</h3>
+                        <ul>
+                            <li> <a class="nav-link" href="https://opennlp.apache.org/">Apache OpenNLP</a></li>
+                            <li> <a class="nav-link" href="https://github.com/attardi/wikiextractor">WikiExtractor</a></li>
+                            <li> <a class="nav-link" href="https://hadoop.apache.org/">Apache Hadoop</a></li>
+                            <br>
+                            <li> <a class="nav-link" href="https://spring.io/projects/spring-boot">Spring Boot</a></li>
+                            <li> <a class="nav-link" href="https://getbootstrap.com/">Bootstrap</a></li>
+                            <li> <a class="nav-link" href="https://d3js.org/">Data-Driven Documents (D3)</a></li>
+                        </ul>
+                        <h3>Papers</h3>
+                        <ul>
+                            <li><a class="nav-link" href="https://people.ischool.berkeley.edu/~hearst/papers/coling92.pdf">
+                                Automatic Acquisition of Hyponyms from Large Text Corpora</a>
+                            </li><li><a class="nav-link" href="https://www.aclweb.org/anthology/R11-2017.pdf">
+                            Lexico-Syntactic Patterns for Automatic Ontology Building</a> </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading p-3 mb-3" role="tab" id="heading6">
+                    <h3 class="panel-title">
+                        <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
+                            Who are we?
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapse6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading6">
+                    <div class="panel-body px-3 mb-4">
+                        This project is made within the BA-Praktikum base.camp at the University of Hamburg with the amazing support from Eugen Ruppert. <br>
+                        We are Fabian Kazemi (BSc Informatics), Nino Rusieshvili (BSc Software Systems Development) and Alexander Pesterev (BSc Software Systems Development).
+                    </div>
+                </div>
+            </div>
+
+         </div>
+    </div>
+</section>
+
+<div class="container">
+    <footer>
+        <p>2021 Basecamp Taxonomien.</p>
+    </footer>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

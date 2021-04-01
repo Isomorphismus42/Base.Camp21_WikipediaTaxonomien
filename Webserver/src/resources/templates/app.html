@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wikitax</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script type="text/javascript" th:src="@{/app.js}"></script>
+    <link th:href="@{/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="./home">Wikitax</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="./home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="./app">Browser</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./about">About</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div class = "container">
+    <div class = "row d-flex p-2 ">
+
+        <!-- Trigger modal button-->
+        <button type="button" class="btn btn-primary" style = "margin-right: 1%;" data-toggle="modal" data-target="#infoModal">
+            ?
+        </button>
+        <div class = "col-md-auto nowrap">
+            <div class="input-group">
+                <input id="searchField" type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                       aria-describedby="search-addon" />
+                <button id = "searchButton" type="button" class="btn btn-outline-primary">search</button>
+            </div>
+        </div>
+
+        <div class = "col-md-8">
+            <div class="row">
+                <button id ="sugButton1" type="button" style = "margin-left: 1%;" class=" btn btn-primary" th:text = "${suggestions[0]}"></button>
+                <button id ="sugButton2" type="button" style = "margin-left: 1%;"  class="btn btn-primary" th:text = "${suggestions[1]}"></button>
+                <button id ="sugButton3" type="button" style = "margin-left: 1%;" class="btn btn-primary" th:text = "${suggestions[2]}"></button>
+                <button id ="sugButton4" type="button" style = "margin-left: 1%;" class="btn btn-primary" th:text = "${suggestions[3]}"></button>
+                <button id ="sugButton5" type="button" style = "margin-left: 1%;" class="btn btn-primary">Random</button>
+            </div>
+        </div>
+    </div>
+
+    <div id = "diagram" class="container-flex border border-primary map-container">
+    </div>
+</div>
+
+<div class="container">
+    <footer>
+        <p>2021 Basecamp Taxonomien.</p>
+    </footer>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalTitle">How to use</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    You can show the taxonomy diagram for a custom keyword by entering the word into
+                    the search field and pressing the search button. An empty node will be returned,
+                    if your query doesn't have valid children in our database.
+                    <br><br>
+                    Next to the search button you have four suggestions, randomly chosen from the database.
+                    Note that the suggestions are uncurated and could be low quality keywords.
+                    <br><br>
+                    The "Random" button allows you to randomly load a taxonomy from the database.
+                    <br><br>
+                    Clicking a leaf will load more children, if any exist.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end-->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Wikitax</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="./home">Wikitax</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="./home">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="./app">Browser</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="./about">About</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<!-- Main jumbotron -->
+<div class="jumbotron">
+	<div class="container">
+		<h1> Taxonomies from Wikipedia</h1>
+		<p th:text = "${message}"></p>
+		<p><a class="btn btn-primary btn-lg" href="./app" role="button">Open app &raquo;</a></p>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<h2 th:text = "${headings[0]}"></h2>
+			<p th:text = "${infoTexts[0]}"></p>
+		</div>
+		<div class="col-md-4">
+			<h2 th:text = "${headings[1]}"></h2>
+			<p th:text = "${infoTexts[1]}"></p>
+		</div>
+		<div class="col-md-4">
+			<h2 th:text = "${headings[2]}"></h2>
+			<p th:text = "${infoTexts[2]}"></p>
+		</div>
+	</div>
+
+	<hr>
+
+	<footer>
+		<p>2021 Basecamp Taxonomien.</p>
+	</footer>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
