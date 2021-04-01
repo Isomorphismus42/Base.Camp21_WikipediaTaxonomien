@@ -1,6 +1,9 @@
 Bei den verwendeten POS-Modellen handelt es sich um die Apache OpenNLP Modelle.
 https://opennlp.apache.org/
 
+Der Lemmatizer wurde trainiert mit folgenden Daten: 
+https://raw.githubusercontent.com/richardwilly98/elasticsearch-opennlp-auto-tagging/master/src/main/resources/models/en-lemmatizer.dict
+
 Die POS-Modelle sind zu finden unter:
 http://opennlp.sourceforge.net/models-1.5/
 
