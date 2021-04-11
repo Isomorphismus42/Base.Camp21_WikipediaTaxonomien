@@ -17,6 +17,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 
+/**
+ * Mapper-Klasse zum erkennen und bilden der Taxonomie-Relationen.
+ */
+
 // Mapper <Input Key, Input Value, Output Key, Output Value>
 public class TokenMapper extends Mapper<Object, Text, Text, FloatWritable> {
 

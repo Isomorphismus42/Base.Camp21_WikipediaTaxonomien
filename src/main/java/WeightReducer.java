@@ -4,6 +4,9 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
+/**
+ * Reducer-Klasse zum Zusammenfassen identischer Taxonomie-Relationen und Aufsummieren der zugeörigen Gewichte.
+ */
 public class WeightReducer extends Reducer<Text, FloatWritable, Text, FloatWritable> {
     private FloatWritable result = new FloatWritable();
 

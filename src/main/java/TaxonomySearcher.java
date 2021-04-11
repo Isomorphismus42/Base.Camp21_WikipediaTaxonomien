@@ -9,6 +9,9 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+/**
+ * Main-Klasse zum initialisieren des MapReduce-Jobs.
+ */
 // Tool implementiert um Parameter übergabe in der Konsole zu ermöglichen.
 public class TaxonomySearcher extends Configured implements Tool {
 

@@ -229,7 +229,7 @@ public class SentenceAnalyzer {
                     taxonomyAdded = true;
 
                     //prüfe auf Adjektive in den Ausdrücken und baue ggf weitere Relationen nach dem Schema
-                    //OHNE ADJEKTIVE#MIT ADJEKTIVE
+                    //OHNE ADJEKTIVE\tMIT ADJEKTIVEN\tGEWICHT
                     if (containsAdjective(child)) {
                         results.add(removeTags(removeAdjectives(child)) + "\t" + removeTags(child) + "0.50");
                     }
@@ -281,7 +281,7 @@ public class SentenceAnalyzer {
      * @return Die entstehenden Satz-Fragmente als String-Array
      */
     private String[] handleAndOrComma(String sentence){
-        return sentence.split(" and_CC_I-NP ?| ?and_CC_O | or_CC_I-NP ?| ?or_CC_O | ,_,_I-NP | ,_,_O ");
+        return sentence.split("and_CC_I-NP|and_CC_O|or_CC_I-NP|or_CC_O|,_,_I-NP|,_,_O|,_NNP?_(I|B)-NP");
     }
 
     /**
@@ -292,7 +292,7 @@ public class SentenceAnalyzer {
      * @return die entstehenden Satz-Fragmente als String-Array
      */
     private String[] handleAndOrCommaOf(String sentence) {
-        return sentence.split(" and_CC_I-NP ?| ?and_CC_O | or_CC_I-NP ?| or_CC_O | ,_,_I-NP | ,_,_O | of_IN_B-PP ");
+        return sentence.split("and_CC_I-NP|and_CC_O|or_CC_I-NP|or_CC_O|,_,_I-NP|,_,_O|of_IN_B-PP|,_NNP?_(I|B)-NP");
     }
 
     /**
@@ -302,9 +302,8 @@ public class SentenceAnalyzer {
      * @return der String ohne Wort-Tags
      */
     private String removeTags(String s){
-        return s.replaceAll("(_(([A-Z]{1,4}|-(L|R)RB-)|''|``))?_(I|B)-(NP|O)","").trim();
+        return s.replaceAll("(_(([A-Z]{1,4}|-(L|R)RB-)|''|``))?_((I|B)-NP|O)","").replaceAll("_|,|`","").trim();
     }
-    //.replaceAll("_|`|'|,","")
 
     /**
      * Prüft ob der gebebene Ausdruck ein Adejektiv enthält.
