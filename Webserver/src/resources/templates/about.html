@@ -132,9 +132,10 @@
                         <p>We store the hypernym-hyponym pairs with their corresponding summed weight in a MySQL database. </p>
                         Accessing it is made possible with the API that you can find at:
                         <a class="nav-link" href="./api">/api</a>
-                        There are two types of requests possible:
+                        There are three types of requests possible:
                         <ol>
                             <li> Get the children of a parent</li>
+                            <li> Get the parent of a child</li>
                             <li> Get a JSON Object representing the 4 levels deep tree from the parent node</li>
                         </ol>
                         <br>
@@ -144,8 +145,17 @@
                         Example: Get the children of country: <a class="nav-link" href="./api?parent=Country">/api?parent=Country</a>
                         <br>
                         This returns a JSON array like: <code> ["United States","Australia","China","Canada","India","Japan"] </code>
-                        <br><br>
-                        The second one can be accessed by giving a root parameter.
+                        <br>
+                        You can give an optional limit parameter, which limits the maximum amount of children that are returned.
+                        The default is 6.
+                        <br><hr>
+                        The second one can be accessed by giving a child parameter.
+                        <br>
+                        Example: Get the children of country: <a class="nav-link" href="./api?child=Germany">/api?child=Germany</a>
+                        This returns a String: <code> european country </code>
+                        <br>
+                        <br><hr>
+                        The third one can be accessed by giving a root parameter.
                         <br>
                         Example: Get a tree with country as the root node: <a class="nav-link" href="./api?root=Country">/api?root=Country</a>
 

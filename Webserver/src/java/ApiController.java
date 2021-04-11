@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  * Steuert die API, die es ermöglicht Daten aus der DB zu lesen
@@ -24,24 +25,55 @@ public class ApiController {
     private SQLConnector connector;
     private Connection conn;
 
+    /**
+     * Liefert JSON Objekte, abhänig von der übergebenen Parametern zurück
+     * @param parent Parent, dessen Kinder zurückgegeben werden sollen
+     * @param root Root, von dem aus ein Baum Objekt gebaut werden soll
+     * @param limit Optional bei parent, um maximale Anzahl der Kinder zu begrenzen
+     * @param child Child, dessen Parent zurückgegeben werden soll
+     */
     @GetMapping("/api")
-    public String api(@RequestParam("parent") Optional<String> parent, @RequestParam("root") Optional<String> root, Model model) throws JSONException, SQLException {
+    public String api(@RequestParam("parent") Optional<String> parent, @RequestParam("root") Optional<String> root,
+                      @RequestParam("limit") Optional<String> limit, @RequestParam("child") Optional<String> child,
+                      Model model) throws JSONException, SQLException {
         // Baue Verbindung zur Datenbank auf
         connector = new SQLConnector();
         conn = connector.getConn();
 
+        // Wenn root gegeben ist -> Gib JSON Baum
         if (root.isPresent()) {
             if (root.get().equals("random")) {
                 return getInitTreeData(getRandom());
             }
             return getInitTreeData(root.get());
         }
+        // Wenn parent gegeben ist -> gib Kinder (default: 6)
         else if (parent.isPresent()) {
             JSONArray children = new JSONArray();
-            for (String s: getChildren(parent.get())) {
-                children.put(s);
+            // Wenn limit gegeben ist -> Gib maximal limit Kinder
+            if (limit.isPresent()) {
+                // Check ob String ein valider Integer ist
+                if (limit.get().matches("(0|[1-9]\\d*)")) {
+                    for (String s: getChildren(parent.get(), Integer.parseInt(limit.get()))) {
+                        children.put(s);
+                    }
+                }
+                else { // sonst default zu 6
+                    for (String s: getChildren(parent.get(), 6)) {
+                        children.put(s);
+                    }
+                }
+
+            }
+            else {
+                for (String s: getChildren(parent.get(), 6)) {
+                    children.put(s);
+                }
             }
             return children.toString();
+        }
+        else if (child.isPresent()) {
+            return getParent(child.get()); // gibt nur String
         }
         else {
           return "Invalid request, check API documentation for more info";
@@ -53,9 +85,9 @@ public class ApiController {
      * @param parent Key des Parent Knoten
      * @return String Array mit Keys der Kinderknoten
      */
-    private String[] getChildren(String parent) {
+    private String[] getChildren(String parent, int limit) {
         try {
-            String[] result = getChildrenData(parent);
+            String[] result = getChildrenData(parent, limit);
             if (result == null) {
                 return new String[] {"null"};
             }
@@ -68,14 +100,16 @@ public class ApiController {
 
     /**
      * Holt die Kinder von Parent aus der DB
-     * @param parent
+     * @param parent parent Knoten als String
+     * @param Limit int, Anzahl der Kinder, die maximal zurückgegeben werden sollen (default = 6)
      * @return String Array mit Kindern von Parent, null wenn keine Ergebnis existiert
+     * @throws SQLException
      */
-    public String[] getChildrenData(String parent) throws SQLException {
+    public String[] getChildrenData(String parent, int Limit) throws SQLException {
         ArrayList<String> tempResult = new ArrayList<String>();
         Statement stmt = conn.createStatement();
         // Begrenz auf sechs Kinder, kann verändert werden
-        String sql = "SELECT child FROM `taxonomien` WHERE parent = '" + parent + "' ORDER BY weight DESC LIMIT 6";
+        String sql = "SELECT child FROM `taxonomien` WHERE parent = '" + parent + "' ORDER BY weight DESC LIMIT " + Limit;
         ResultSet rs = stmt.executeQuery(sql);
 
         while(rs.next()){
@@ -96,6 +130,17 @@ public class ApiController {
             throwables.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * Holt maximal 6 Kinder von Parent aus der DB. getChildrenData(String parent) kann aufgerufen werden, um
+     * andere Anzahl von Kindern zu erhalten
+     * @param parent parent Knoten als String
+     * @return String Array mit Kindern von Parent, null wenn keine Ergebnis existiert
+     * @throws SQLException
+     */
+    public String[] getChildrenData(String parent) throws SQLException {
+        return getChildrenData(parent, 6);
     }
 
     /**
