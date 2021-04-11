@@ -1,5 +1,5 @@
 """
-Einfaches Skript zum durchführen einer Stichporbe auf den Taxonomiedaten.
+Einfaches Skript zum Durchführen einer Stichporbe auf den Taxonomiedaten.
 """
 import random
 
