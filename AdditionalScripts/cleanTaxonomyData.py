@@ -10,10 +10,10 @@ def cleanData(datei):
     summeSymmetrisch = 0
     summeLeer = 0
     menge = set()
-    with open(datei, "r", encoding='UTF-8') as f:
-        taxonomienClean = open(datei[:-4] + "_clean.txt", "x", encoding='UTF-8')
-        ref = open(datei[:-4] + "_entfernteReflexionen.txt", "x", encoding='UTF-8')
-        symm = open(datei[:-4] + "_entfernteSymmetrien.txt", "x", encoding='UTF-8')
+    with open(datei, "r", encoding='UTF-8', newline='\n') as f:
+        taxonomienClean = open(datei[:-4] + "_clean.txt", "x", encoding='UTF-8', newline='\n')
+        ref = open(datei[:-4] + "_entfernteReflexionen.txt", "x", encoding='UTF-8', newline='\n')
+        symm = open(datei[:-4] + "_entfernteSymmetrien.txt", "x", encoding='UTF-8', newline='\n')
         for line in f:
             colums = line.lower().split("\t")
             if (colums[0] == colums[1]):
