@@ -3,6 +3,7 @@
 Dieses Projekt erstellt eine Web-Applikation zur Suche und Darstellung der Taxonomien innerhalb von Wikipedia mittels der BigData Methoden Hadoop und MapReduce. 
 
 Die Applikation wird in einer Form vom interaktiven Suchbaum dargestellt. 
+![GitHub Logo](/Base.Camp21_WikipediaTaxonomien/Wikitax.PNG)
 
 Die Demo der Applikation ist zu finden unter: 
 
