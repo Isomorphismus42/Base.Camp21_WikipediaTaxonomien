@@ -2,11 +2,16 @@
 
 Dieses Projekt erstellt eine Web-Applikation zur Suche und Darstellung der Taxonomien innerhalb von Wikipedia mittels der BigData Methoden Hadoop und MapReduce. 
 
-Der [Link](http://basecamp-demos.informatik.uni-hamburg.de:8080/wikitax/) zur Demo der Applikation. 
+Die Demo der Applikation ist zu finden unter: 
+http://basecamp-demos.informatik.uni-hamburg.de:8080/wikitax/
 
 ## Daten aus Wikipedia
 
-Der Dump von Wikipedia kann von [hier](https://dumps.wikimedia.org/enwiki/) in .xml Format heruntergeladen und anschließend mittels des [Wikiextractors](https://github.com/attardi/wikiextractor) formatiert werden. Es ist möglich den Dump in mehreren Textdateien aufzuteilen. Um den Wikiextractor nach seiner Installation zu starten kann `python -m wikiextractor.WikiExtractor -o OUTPUT_FOLDER -b 200M INPUT.xml` über die Konsole aufgerufen werden.
+Der Dump von Wikipedia kann in .xml Format heruntergeladen und anschließend mittels des Wikiextractors formatiert werden. Es ist möglich den Dump in mehreren Textdateien aufzuteilen. Um den Wikiextractor nach seiner Installation zu starten kann `python -m wikiextractor.WikiExtractor -o OUTPUT_FOLDER -b 200M INPUT.xml` über die Konsole aufgerufen werden.
+
+Der Dump ist zu finden unter: https://dumps.wikimedia.org/enwiki/
+
+Der Wikiextractactor ist zu finden unter: https://github.com/attardi/wikiextractor
 
 ## Apache Hadoop File Systems (HDFS)
 
