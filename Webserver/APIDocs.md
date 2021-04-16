@@ -57,12 +57,12 @@ The API can be reached under /api. All calls need to be sent to this url.
 
 * **Success Response:**
 
-    **Content:** `{genre}`
+    **Content:** `genre`
  
 * **Error Response:**
 
 	No parent found:
-    **Content:** `{ null }`
+    **Content:** `null`
 
 * **Sample Call:**
 
@@ -97,7 +97,7 @@ The API can be reached under /api. All calls need to be sent to this url.
 * **Success Response:**
 
     **Content:** `
-    [{"parent":"null",
+   { [{"parent":"null",
       "children":[
          {
             "parent":"economist",
@@ -190,7 +190,7 @@ The API can be reached under /api. All calls need to be sent to this url.
             "name":"indian economist"
          }
       ],
-      "name":"economist"}]
+      "name":"economist"}] }
       `
 
 * **Error Response:**
