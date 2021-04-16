@@ -2,7 +2,7 @@
 
 Dieses Projekt erstellt eine Web-Applikation zur Suche und Darstellung der Taxonomien innerhalb von Wikipedia mittels der BigData Methoden Hadoop und MapReduce. 
 
-Die Applikation wird in einer Form vom interaktiven Suchbaum dargestellt. 
+Die Applikation visualisiert debei die gefundenen Taxonomien in Form eines interaktiven Suchbaumes. 
 
 ![GitHub Logo](Wikitax.PNG)
 
@@ -12,26 +12,47 @@ http://basecamp-demos.informatik.uni-hamburg.de:8080/wikitax/
 
 ## Daten aus Wikipedia
 
-Der Dump von Wikipedia kann in .xml Format heruntergeladen und anschließend mittels des Wikiextractors formatiert werden. Es ist möglich den Dump in mehreren Textdateien aufzuteilen. Um den Wikiextractor nach seiner Installation zu starten kann `python -m wikiextractor.WikiExtractor -o OUTPUT_FOLDER -b 200M INPUT.xml` über die Konsole aufgerufen werden.
+Der Dump von Wikipedia kann im .xml Format heruntergeladen und formatiert entpackt werden werden. Der entsprechende Konsolenbefehl lautet:
+`bunzip2 DUMP.xml.bz2`
 
-Der Dump ist zu finden unter: 
+Anschließend muss der Dump mittels des *Wikiextractors* konvertiert werden. Dabei ist es möglich den Dump in mehrere Textdateien aufzuteilen. Die entsprechende Konsolenbefehle lauteten:
+`pip install wikiextractor`
+`python -m wikiextractor.WikiExtractor -o OUTPUT_FOLDER -b 200M INPUT.xml`
 
+Die Dumps sind zu finden unter: 
 https://dumps.wikimedia.org/enwiki/
 
 Der Wikiextractactor ist zu finden unter: 
-
 https://github.com/attardi/wikiextractor
 
 ## Apache Hadoop File Systems (HDFS)
 
-ermöglicht die Daten über einem Server zu packen, damit sie in hoher Geschwindigkeit mit MapReduce analysiert und verarbeitet werden können. 
+Ermöglicht Daten in einen Cluster an Rechennodes zu laden, damit sie in hoher Geschwindigkeit mit MapReduce analysiert und verarbeitet werden können. Zu Navigation im HDFS sind folgende Konsolenbefehler hilfreich:
+
+`hadoop fs -mkdir FOLDER`
+erstellen eines Verzeichnisses
+
+`hadoop fs -put INPUT_FILE FOLDER`
+kopieren einer/s Datei7Verzeichnisses in das System
+
+`hadoop fs -get INPUT_FOLDER FOLDER`
+kopieren einer/s Datei7Verzeichnisses aus dem System
+
+`hadoop job -list`
+aktuelle Liste der laufenden Jobs
+
+`hadoop job -kill JobId`
+Abbruch eines Laufenden Jobs
 
 ## MapReduce-Job 
 
-Das MapReduce-Programm besteht aus den vier Java-Klassen TaxonomySearcher, TokenMapper, SentenceAnalyzer und WeightReducer, und wurde mittels der IDE IntelliJ IDEA von Jetbrains kompiliert, indem ein entsprechendes Artifact gebaut wurde.
+Das MapReduce-Programm besteht aus den vier Java-Klassen **TaxonomySearcher, TokenMapper, SentenceAnalyzer** und **WeightReducer**, und wurde mittels der IDE *IntelliJ IDEA* von *Jetbrains* kompiliert, indem ein entsprechendes Artifact gebaut wurde.
+
 Um ein MapReduce-Job mit unserem Programm zu starten kann über die Konsole 
 `hadoop jar mapreduce.taxonomysearcher.jar TaxonomySearcher -files en-sent.bin,en-token.bin,en-pos-maxent.bin,en-chunker.bin,en-lemmatizer.bin INPUT OUTPUT` 
-aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokalen Verzeichnis befinden. Der Parameter kann mit `-Dmapreduce.map.failures.maxpercent=3` ergänzt werden um beim durchführen des Jobs eine Fehlertoleranz von 3% zuzulassen.
+aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokalen Verzeichnis befinden. Der Parameter
+`-Dmapreduce.map.failures.maxpercent=3` 
+kann ergänzt werden um beim durchführen des Jobs eine Fehlertoleranz von 3% zuzulassen.
 
 #### TaxonomySearcher
 initialisiert den MapReduce-Job, indem die Konfiguration geladen wird und anschließend die Mapper, die Reducer-, sowie die Key- und Value-Klassen zugewiesen werden.
@@ -47,12 +68,13 @@ Die Pattern, die wir nutzen um taxonomische Relationen zu finden, sind: suchAsPa
 fasst identische taxonomische Relationen zusammen und summiert zugeörige Gewichte auf.
 
 Am Ende eines MapReduce-Jobs werden alle gefundenen TaxonomieRelationen mit summiertem Gewicht ihrer Häufigkeit in den einzelnen Part-Dateien
-der Ausgabe des Jobs gespeichert. Diese können wir über die Konsole mittels des Befehls `hadoop fs -text JOB-OUTPUT | sort -t$’\t’ -k3nr >OUTPUT_sorted.txt`
+der Ausgabe des Jobs gespeichert. Diese können wir über die Konsole mittels des Befehls 
+`hadoop fs -text JOB-OUTPUT | sort -t$’\t’ -k3nr >OUTPUT_sorted.txt`
 als sortierte Liste abgespeichert werden.
 
 #### cleanTaxonomyData.py
 
-wird nach dem MapReduce-Job genutzt um die Daten aufzubereiten, bis sie in die Datenbank eingelesen werden.
+wird nach dem MapReduce-Job genutzt um die Daten aufzubereiten, bevor sie in die Datenbank eingelesen werden und ist unter /AdditionalScripts/ zu finden.
 
 ## Webserver
 Unser Webserver wird auf dem Tomcat Server gehostet. Dafür wird unser Java Code für den Webserver in eine WAR (Web Application Archive) kompiliert und
@@ -80,9 +102,15 @@ HTML Templates mit Daten zu füllen und anschließend die HTML Seite zurückzuge
 
 ## MySQL Datenbank 
 
-Wir verwenden als Datenbank eine MySQL Datenbank mit einer Tabelle, in die wir unsere
-Daten in .txt Form importiert haben. Die Tabelle besteht aus drei Spalten: Parent, Child und
-Weight.
+Wir verwenden als Datenbank eine MySQL Datenbank mit einer Tabelle, in die wir unsere Daten in .txt Form importiert haben. Die Tabelle besteht aus drei Spalten: Parent, Child und Weight. Die entsprechenden Konsolenbefehle zu erstellen der Tabelle und einlesesen der Daten lauten:
+
+`CREATE TABLE taxonomien (parent VARCHAR(100) NOT NULL, child VARCHAR(100) NOT NULL, weight DECIMAL(10,3) NOT NULL, PRIMARY KEY (parent,child)) CHARACTER SET UTF8mb4;`
+
+`CREATE INDEX idx_taxonomien_weight ON taxonomien (weight);`
+
+`LOAD DATA LOCAL INFILE 'PATH/FILE.txt' INTO TABLE taxonomien CHARACTER SET UTF8mb4 FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';`
+
+Die dabei entstehnden Fehlermeldungen können über `show warnings` ausgegeben werden. Es handelt sich dabei um Relationen, die aufgrund von Groß- und Kleinschreibung und der Eindutigkeit des Primärschlüssels, einen Konflikt mit anderen Relationen verursachen. Diese Relationen werden dann nicht in die Datenbank eingetragen.
 
 ## API
 ermöglicht den Zugriff auf die Daten in der Datenbank. 
