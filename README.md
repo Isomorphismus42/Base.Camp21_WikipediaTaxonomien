@@ -109,6 +109,8 @@ Werden genutzt, um die jeweiligen HTML Seiten zu generieren und bereit zu stelle
 wird Thymeleaf12 und das zugehörige Modul für Spring verwendet, um zuvor erstellte
 HTML Templates mit Daten zu füllen und anschließend die HTML Seite zurückzugeben.
 
+Anmerkung: Eine ausführliche ReadMe zum Webserver und zu dem Frontend befindet sich im [Webserver Ordner](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/blob/master/Webserver/README.md). 
+
 ## MySQL Datenbank 
 
 Wir verwenden als Datenbank eine MySQL Datenbank mit einer Tabelle, in die wir unsere Daten in .txt Form importiert haben. Die Tabelle besteht aus drei Spalten: Parent, Child und Weight. Die entsprechenden Konsolenbefehle zu erstellen der Tabelle und einlesesen der Daten lauten:
@@ -128,4 +130,3 @@ Ermöglicht den Zugriff auf die Daten in der Datenbank. Die Dokumentation ist [h
 
 Für die Darstellung der Applikation werden HTML, Javascript, jQuery und Data-Driven Documents D3 verwendet. Die HTML Seiten wurden mithilfe von Bootstrap erstellt
 
-Anmerkung: Eine ausführliche ReadMe zum Webserver befindet sich im [Webserver Ordner](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/blob/master/Webserver/README.md). 
