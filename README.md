@@ -85,6 +85,10 @@ als sortierte Liste abgespeichert werden.
 
 wird nach dem MapReduce-Job genutzt um die Daten aufzubereiten, bevor sie in die Datenbank eingelesen werden und ist im Verzeichnis [/AdditionalScripts/](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/tree/master/AdditionalScripts) zu finden.
 
+#### taxonomySample.py
+
+kann genutzt werden um eine Stichporbe auf einem Taxonomie-Datensatz durchzuführen. Das Format der Daten richtet sich dabei nach dem Output des MapReduce-Jobs und  sollte der Form `VATER\tKIND\tGEWICHT` entsprechen. Das Skript ist im Verzeichnis [/AdditionalScripts/](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/tree/master/AdditionalScripts) zu finden.
+
 ## Webserver
 Unser Webserver wird auf dem Tomcat Server gehostet. Dafür wird unser Java Code für den Webserver in eine WAR (Web Application Archive) kompiliert und
 anschließend in Tomcat deployt. Der Code ist mithilfe von Spring Boot, was auf dem Spring Framework aufbaut, geschrieben.
