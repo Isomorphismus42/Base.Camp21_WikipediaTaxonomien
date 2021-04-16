@@ -127,3 +127,5 @@ ermöglicht den Zugriff auf die Daten in der Datenbank.
 ## Frontend
 
 Für die Darstellung der Applikation werden HTML, Javascript, jQuery und Data-Driven Documents D3 verwendet. Die HTML Seiten wurden mithilfe von Bootstrap erstellt
+
+Anmerkung: Eine ausführliche ReadMe zum Webserver befindet sich im [Webserver Ordner](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/blob/master/Webserver/README.md). 
