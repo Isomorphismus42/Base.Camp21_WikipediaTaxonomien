@@ -12,7 +12,7 @@ http://basecamp-demos.informatik.uni-hamburg.de:8080/wikitax/
 
 ## Daten aus Wikipedia
 
-Der Dump von Wikipedia kann im .xml Format heruntergeladen und formatiert entpackt werden werden. Der entsprechende Konsolenbefehl lautet:
+Der Dump von Wikipedia kann im .xml Format heruntergeladen und entpackt werden werden. Der entsprechende Konsolenbefehl lautet:
 
 `bunzip2 DUMP.xml.bz2`
 
