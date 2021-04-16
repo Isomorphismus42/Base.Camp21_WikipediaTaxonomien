@@ -1,10 +1,10 @@
 """
-Einfaches Skript zum Durchführen einer Stichporbe auf den Taxonomiedaten.
+Einfaches Skript zum Durchführen einer Stichporbe auf den Taxonomiedaten. Die eingelesen Daten sollten dem Format VATER\tKIND\tGEWICHT entsprechen.
 """
 import random
 
 
-# Parameter: Verzeichnis der Daten und Stichprobengröße
+# Parameter: Verzeichnis der Daten im Format VATER\tKIND\tGEWICHT und Stichprobengröße
 def rateRandomLines(datei, stichprobengroesse):
     randomlist = []
     summe = 0
