@@ -55,7 +55,7 @@ Um ein MapReduce-Job mit unserem Programm zu starten kann über die Konsole
 
 `hadoop jar mapreduce.taxonomysearcher.jar TaxonomySearcher -files en-sent.bin,en-token.bin,en-pos-maxent.bin,en-chunker.bin,en-lemmatizer.bin INPUT OUTPUT` 
 
-aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokalen Verzeichnis befinden und die zu verarbeitenden Daten ins HDFS geladen wurden. Die benötigenten POS-Dateien sind im Verzeichnis /POS-Models/ hinterlegt. Der Parameter
+aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokalen Verzeichnis befinden und die zu verarbeitenden Daten ins HDFS geladen wurden. Die benötigenten POS-Dateien sind im Verzeichnis [/POS-Models/](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/tree/master/POS-Models) hinterlegt. Der Parameter
 
 `-Dmapreduce.map.failures.maxpercent=3` 
 
@@ -83,7 +83,7 @@ als sortierte Liste abgespeichert werden.
 
 #### cleanTaxonomyData.py
 
-wird nach dem MapReduce-Job genutzt um die Daten aufzubereiten, bevor sie in die Datenbank eingelesen werden und ist unter /AdditionalScripts/ zu finden.
+wird nach dem MapReduce-Job genutzt um die Daten aufzubereiten, bevor sie in die Datenbank eingelesen werden und ist im Verzeichnis [/AdditionalScripts/](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/tree/master/AdditionalScripts) zu finden.
 
 ## Webserver
 Unser Webserver wird auf dem Tomcat Server gehostet. Dafür wird unser Java Code für den Webserver in eine WAR (Web Application Archive) kompiliert und
