@@ -122,7 +122,7 @@ Wir verwenden als Datenbank eine MySQL Datenbank mit einer Tabelle, in die wir u
 Die dabei entstehnden Fehlermeldungen können über `show warnings` ausgegeben werden. Es handelt sich dabei um Relationen, die aufgrund von Groß- und Kleinschreibung und der Eindutigkeit des Primärschlüssels, einen Konflikt mit anderen Relationen verursachen. Diese Relationen werden dann nicht in die Datenbank eingetragen.
 
 ## API
-ermöglicht den Zugriff auf die Daten in der Datenbank. 
+Ermöglicht den Zugriff auf die Daten in der Datenbank. Die Dokumentation ist [hier](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/blob/master/Webserver/APIDocs.md) zu finden. Die Live-Demo ist [hier](http://basecamp-demos.informatik.uni-hamburg.de:8080/wikitax/api) gehostet. 
 
 ## Frontend
 
