@@ -13,10 +13,13 @@ http://basecamp-demos.informatik.uni-hamburg.de:8080/wikitax/
 ## Daten aus Wikipedia
 
 Der Dump von Wikipedia kann im .xml Format heruntergeladen und formatiert entpackt werden werden. Der entsprechende Konsolenbefehl lautet:
+
 `bunzip2 DUMP.xml.bz2`
 
 Anschließend muss der Dump mittels des *Wikiextractors* konvertiert werden. Dabei ist es möglich den Dump in mehrere Textdateien aufzuteilen. Die entsprechende Konsolenbefehle lauteten:
+
 `pip install wikiextractor`
+
 `python -m wikiextractor.WikiExtractor -o OUTPUT_FOLDER -b 200M INPUT.xml`
 
 Die Dumps sind zu finden unter: 
@@ -33,10 +36,10 @@ Ermöglicht Daten in einen Cluster an Rechennodes zu laden, damit sie in hoher G
 erstellen eines Verzeichnisses
 
 `hadoop fs -put INPUT_FILE FOLDER`
-kopieren einer/s Datei7Verzeichnisses in das System
+kopieren einer/s Datei/Verzeichnisses in das System
 
 `hadoop fs -get INPUT_FOLDER FOLDER`
-kopieren einer/s Datei7Verzeichnisses aus dem System
+kopieren einer/s Datei/Verzeichnisses aus dem System
 
 `hadoop job -list`
 aktuelle Liste der laufenden Jobs
@@ -49,9 +52,13 @@ Abbruch eines Laufenden Jobs
 Das MapReduce-Programm besteht aus den vier Java-Klassen **TaxonomySearcher, TokenMapper, SentenceAnalyzer** und **WeightReducer**, und wurde mittels der IDE *IntelliJ IDEA* von *Jetbrains* kompiliert, indem ein entsprechendes Artifact gebaut wurde.
 
 Um ein MapReduce-Job mit unserem Programm zu starten kann über die Konsole 
+
 `hadoop jar mapreduce.taxonomysearcher.jar TaxonomySearcher -files en-sent.bin,en-token.bin,en-pos-maxent.bin,en-chunker.bin,en-lemmatizer.bin INPUT OUTPUT` 
+
 aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokalen Verzeichnis befinden. Der Parameter
+
 `-Dmapreduce.map.failures.maxpercent=3` 
+
 kann ergänzt werden um beim durchführen des Jobs eine Fehlertoleranz von 3% zuzulassen.
 
 #### TaxonomySearcher
@@ -69,7 +76,9 @@ fasst identische taxonomische Relationen zusammen und summiert zugeörige Gewich
 
 Am Ende eines MapReduce-Jobs werden alle gefundenen TaxonomieRelationen mit summiertem Gewicht ihrer Häufigkeit in den einzelnen Part-Dateien
 der Ausgabe des Jobs gespeichert. Diese können wir über die Konsole mittels des Befehls 
+
 `hadoop fs -text JOB-OUTPUT | sort -t$’\t’ -k3nr >OUTPUT_sorted.txt`
+
 als sortierte Liste abgespeichert werden.
 
 #### cleanTaxonomyData.py
