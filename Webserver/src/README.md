@@ -147,8 +147,7 @@ $.get('./api?parent=' + parent.name + '&limit=' + yourLimit).then(function(resul
 
 
 ## API Documentation
-The API use is also documented on the about page of the server. Alternatively you can see it here. 
-<!-- TODO: Add link to docu -->
+The API use is also documented on the about page of the server. Alternatively you can see it [here](https://github.com/Isomorphismus42/Base.Camp21_WikipediaTaxonomien/blob/master/Webserver/src/APIDocs.md). 
 
 
 <!-- ACKNOWLEDGEMENTS -->
