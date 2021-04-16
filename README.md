@@ -55,7 +55,7 @@ Um ein MapReduce-Job mit unserem Programm zu starten kann über die Konsole
 
 `hadoop jar mapreduce.taxonomysearcher.jar TaxonomySearcher -files en-sent.bin,en-token.bin,en-pos-maxent.bin,en-chunker.bin,en-lemmatizer.bin INPUT OUTPUT` 
 
-aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokalen Verzeichnis befinden und die zu verarbeitenden Daten ins HDFS geladen wurden. Der Parameter
+aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokalen Verzeichnis befinden und die zu verarbeitenden Daten ins HDFS geladen wurden. Die benötigenten POS-Dateien sind im Verzeichnis /POS-Models/ hinterlegt. Der Parameter
 
 `-Dmapreduce.map.failures.maxpercent=3` 
 
@@ -128,5 +128,5 @@ Ermöglicht den Zugriff auf die Daten in der Datenbank. Die Dokumentation ist [h
 
 ## Frontend
 
-Für die Darstellung der Applikation werden HTML, Javascript, jQuery und Data-Driven Documents D3 verwendet. Die HTML Seiten wurden mithilfe von Bootstrap erstellt
+Für die Darstellung der Applikation werden HTML, Javascript, jQuery und Data-Driven Documents D3 verwendet. Die HTML Seiten wurden mithilfe von Bootstrap erstellt.
 
