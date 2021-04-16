@@ -30,7 +30,7 @@ https://github.com/attardi/wikiextractor
 
 ## Apache Hadoop File Systems (HDFS)
 
-Ermöglicht Daten in einen Cluster an Rechennodes zu laden, damit sie in hoher Geschwindigkeit mit MapReduce analysiert und verarbeitet werden können. Zu Navigation im HDFS sind folgende Konsolenbefehler hilfreich:
+Ermöglicht Daten in einen Cluster an Rechennodes zu laden, damit sie in hoher Geschwindigkeit mit MapReduce analysiert und verarbeitet werden können. Zur Navigation im HDFS sind folgende Konsolenbefehle hilfreich:
 
 `hadoop fs -mkdir FOLDER`
 erstellen eines Verzeichnisses
