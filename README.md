@@ -62,7 +62,7 @@ aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokal
 kann ergänzt werden um beim durchführen des Jobs eine Fehlertoleranz von 3% zuzulassen.
 
 #### Kompilieren der .jar
-Die Jar kann über IntelliJ `Build -> Build Artifacts...` kompiliert werden. Dafür muss zunächst unter `File -> Projektstructure... -> Artifacts` ein entsprechendes Artifact erstellt werden.
+Die Jar kann über IntelliJ mittels `Build -> Build Artifacts...` kompiliert werden. Dafür muss zunächst unter `File -> Projektstructure... -> Artifacts` ein entsprechendes Artifact erstellt werden.
 
 Alternativ kann die Jar auch mit Maven gebaut werden. Die dafür benötigte pom.xml befindet sich im Hauptverzeichnis. Falls die Jar mittels Maven kompiliert wurde, so ist die Main-Klasse bereits festgelegt und muss beim Aufruf über die Konsole nicht explizit angegeben werden:
 
