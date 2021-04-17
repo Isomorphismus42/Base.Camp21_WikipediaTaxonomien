@@ -73,7 +73,13 @@ public class ApiController {
             return children.toString();
         }
         else if (child.isPresent()) {
-            return getParent(child.get()); // gibt nur String
+            String childString = getParent(child.get());
+            if (childString != null) {
+                return childString; // gibt nur String
+            }
+            else {
+                return "null";
+            }
         }
         else {
           return "Invalid request, check API documentation for more info";
