@@ -61,6 +61,13 @@ aufgerufen werden, sofern sich alle benötigten POS-Dateien im entsprechen lokal
 
 kann ergänzt werden um beim durchführen des Jobs eine Fehlertoleranz von 3% zuzulassen.
 
+#### Kompilieren der .jar
+Die Jar kann über IntelliJ `Build -> Build Artifacts...` kompiliert werden. Dafür muss zunächst unter `File -> Projektstructure... -> Artifacts` ein entsprechendes Artifact erstellt werden.
+
+Alternativ kann die Jar auch mit Maven gebaut werden. Die dafür benötigte pom.xml befindet sich im Hauptverzeichnis. Falls die Jar mittels Maven kompiliert wurde, so ist die Main-Klasse bereits festgelegt und muss beim Aufruf über die Konsole nicht explizit angegeben werden:
+
+`hadoop jar mapreduce.taxonomysearcher.jar -files en-sent.bin,en-token.bin,en-pos-maxent.bin,en-chunker.bin,en-lemmatizer.bin INPUT OUTPUT` 
+
 #### TaxonomySearcher
 initialisiert den MapReduce-Job, indem die Konfiguration geladen wird und anschließend die Mapper, die Reducer-, sowie die Key- und Value-Klassen zugewiesen werden.
 
